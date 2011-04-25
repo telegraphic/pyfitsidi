@@ -1,0 +1,11 @@
+OBSCODE = 'MEDI0001'           /
+RDATE   = '2011-04-21'         /
+NO_STKD =                    1 /
+STK_1   =                   -1 / RR pol
+NO_BAND =                    1 /
+NO_CHAN =                    1024 /
+REF_FREQ=   0.00000000000000000E+09 /
+CHAN_BW =   0.01953125000000000E+06 /
+REF_PIXL=   1.00000000000000000E+00 /
+TABREV  =                    2 /
+END
