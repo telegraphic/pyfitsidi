@@ -872,7 +872,7 @@ def config_array_geometry(tbl):
   xyz_m = xyz_ns * 10**-9 * 299792458
 
   # The antenna numbering jumps about a bit
-  ant_num = np.array([[4*i-1, 4*i - 2, 4*i -3, 4*i -4] for i in range(1,9)]).ravel()
+  ant_num = np.array([i for i in range(0,32)])
   
   for i in range(0,tbl.data.size):
     geometry[i]['ANNAME']  = 'MED_%i'%ant_num[i]
@@ -989,7 +989,7 @@ def main():
   print('Creating UV_DATA')
   print('------------------------------------')
   (t_len, bl_len) = 91, 528
-  tbl_uv_data = make_uv_data(91, 528)
+  tbl_uv_data = make_uv_data(t_len, bl_len)
   #print tbl_uv_data.header.ascardlist()
   #tbl_uv_data = config_uv_data(tbl_uv_data)
   print('\n')
