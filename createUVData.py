@@ -27,7 +27,7 @@ Created by Danny Price on 2011-04-21.
 Copyright (c) 2011 The University of Oxford. All rights reserved.
 """
 
-import sys, os, datetime
+import sys, os, datetime, time
 import pyfits as pf, numpy as np, tables as tb
 import ephem
 
@@ -180,10 +180,13 @@ def main():
   for t in range(0,t_len):
     timestamp = h5.root.timestamp0[t]
     timestamps.append(timestamp)
+  
+  # The fits file needs julian date timestamps
   julian_timestamps = []
   for timestamp in timestamps:
-    time = ephem.julian_date(datetime.datetime.fromtimestamp(timestamp))
-    julian_timestamps.append(time)
+    # time = ephem.julian_date(datetime.datetime.fromtimestamp(timestamp))
+    t = ephem.julian_date(time.gmtime(timestamps[0])[:6])
+    julian_timestamps.append(t)
 
     
   print('Creating baseline IDs...')
@@ -213,17 +216,18 @@ def main():
   uvws = []
   # Extract the timestamps and use these to make cygnus our phase centre
   for timestamp in timestamps:
-    time = datetime.datetime.fromtimestamp(timestamp)
-    medicina.update(time)
+    t = datetime.datetime.fromtimestamp(timestamp)
+    medicina.update(t)
     CasA.compute(medicina)
   
     H, d = (CasA.alt * 180 / np.pi, CasA.az* 180 / np.pi)
     #print(H,d)
     uvws.append(computeUVW(H,d))
-    
-  uvws = np.array(uvws).ravel()
-  uvws = uvws.reshape(uvws.size/3,3)
-
+  
+  # This array has shape t_len, num_ants, 3  
+  uvws = np.array(uvws)
+  
+  exit()
   
   # The actual data matrix is stored per row as a multidimensional matrix
   # with the following mandatory axes:
@@ -242,37 +246,41 @@ def main():
     print('processing time sample set %i/%i'%(t+1,t_len))
     for bl in range(0,bl_len):
       
+      # Create an index for the 1D array
+      i = t_len*t + bl
+      
       # Swap real and imaginary
       flux[:,0,0] = h5data[t,:,bl,0,1]
       flux[:,0,1] = h5data[t,:,bl,0,0]
+      
+      tbl_uv_data.data[i]['FLUX'] = flux.ravel()
+      tbl_uv_data.data[i]['WEIGHT']   = weights
+      
+      tbl_uv_data.data[i]['UU']       = uvws[t][0]
+      tbl_uv_data.data[i]['VV']       = uvws[t][1]
+      tbl_uv_data.data[i]['WW']       = uvws[t][2]
+      tbl_uv_data.data[i]['BASELINE'] = baselines[bl]
+      
+      # Date and time
+      # Date is julian date at midnight that day
+      # The time is seconds since midnight
+      julian_midnight = int(julian_timestamps[0])
+      tbl_uv_data.data[i]['DATE']     = julian_midnight
+      tbl_uv_data.data[i]['TIME']     = julian_timestamps[t] - julian_midnight
 
-      # make a big list of all fluxes
-      fluxes.append(flux.ravel())      
+      tbl_uv_data.data[i]['SOURCE']   = 1
+      tbl_uv_data.data[i]['FREQID']   = 1
+      tbl_uv_data.data[i]['INTTIM']   = 3
+    
   print('Data has been reformatted.')
   
   
-  print('\nUpdating metadata')
-  print('-----------------')
-
-  for i in range(0,tbl_uv_data.data.size):
-    tbl_uv_data.data[i]['UU']       = uvws[i%len(timestamps)][0]
-    tbl_uv_data.data[i]['VV']       = uvws[i%len(timestamps)][1]
-    tbl_uv_data.data[i]['WW']       = uvws[i%len(timestamps)][2]
-    tbl_uv_data.data[i]['DATE']     = julian_timestamps[0] # CHECK THIS
-    tbl_uv_data.data[i]['TIME']     = julian_timestamps[i%len(timestamps)]
-    tbl_uv_data.data[i]['BASELINE'] = baselines[i%len(baselines)]
-    tbl_uv_data.data[i]['SOURCE']   = 1
-    tbl_uv_data.data[i]['FREQID']   = 1
-    tbl_uv_data.data[i]['INTTIM']   = 3
-    tbl_uv_data.data[i]['WEIGHT']   = weights
-    tbl_uv_data.data[i]['FLUX']     = fluxes[i]
-
   
   print('Filling array with data...')
   fits[5].data = tbl_uv_data.data
   print('Verifying data integrity...')
   fits.verify()
-
+  
   print('\nWriting to file')
   print('---------------')  
   print "Finally, writing to a new file:"
