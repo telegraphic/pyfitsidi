@@ -1,0 +1,6 @@
+casperfits v 0.1
+----------------
+
+The FITS Interferometry Data Interchange Convention (“FITS-IDI”) is a set of conventions layered upon the standard FITS format to assist in the interchange of data recorded by interferometric telescopes, particularly at radio frequencies and very long baselines.
+
+These scripts create FITS IDI files out of data. They are designed for CASPER instruments such as the ROACH correlator.
