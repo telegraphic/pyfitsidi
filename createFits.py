@@ -781,7 +781,12 @@ def config_antenna(tbl):
     antenna[i]['ARRAY'] = 1
     antenna[i]['FREQID'] = 1
     antenna[i]['NO_LEVELS'] = 12
-
+    antenna[i]['POLTYA'] = 'R'
+    antenna[i]['POLTYB'] = 'R'
+    antenna[i]['POLAA'] = 0
+    antenna[i]['POLAB'] = 0
+    
+    
   tbl.data = antenna
 
   return tbl
@@ -793,12 +798,22 @@ def config_source(tbl):
   
   source = tbl.data[0]
   
-  source['source_id'] = 1
-  source['source'] = 'zenith'
-  source['freqid'] = 1
-  source['raepo'] = 0
-  source['decepo'] = 90
-  source['equinox'] = 'J2000'
+  source['SOURCE_ID'] = 1
+  source['SOURCE'] = 'CygnusA'
+  source['VELDEF'] = 'RADIO'
+  source['VELTYP'] = 'GEOCENTR'
+  source['FREQID'] = 1
+  source['RAEPO'] = 58.99
+  source['DECEPO'] = 40.73
+  source['EQUINOX'] = 'J2000'
+  
+  # Things I'm just making up
+  source['IFLUX']    = 1
+  source['QFLUX']    = 1
+  source['UFLUX']    = 1
+  source['VFLUX']    = 1
+  source['ALPHA']    = 1
+  source['FREQOFF']  = 0
   
   tbl.data[0] = source
   
