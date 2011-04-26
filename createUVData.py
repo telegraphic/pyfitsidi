@@ -31,6 +31,8 @@ import sys, os, datetime, time
 import pyfits as pf, numpy as np, tables as tb
 import ephem
 
+import cPickle as pkl
+
 global earth_radius, light_speed, pi, freq
 earth_radius = 6371 * 10**3     # Earth's radius
 light_speed = 299792458         # Speed of light
@@ -174,7 +176,7 @@ def main():
   h5data = h5.root.xeng_raw0
   
   # Shortcut it
-  # t_len = 10
+  #t_len = 10
 
   print('\nGenerating file metadata')
   print('--------------------------')
@@ -192,14 +194,20 @@ def main():
   # Date and time
   # Date is julian date at midnight that day
   # The time is DAYS since midnight
-  julian_midnight = int(ephem.julian_date(time.gmtime(timestamps[0])[:6]))
-  midnight = timestamps[0]
+  firststamp = timestamps[0]
+  julian = ephem.julian_date(time.gmtime(firststamp)[:6])
+  
+  midnight = int(firststamp)
+  
+  # Ephem returns julian date at NOON, we need at MIDNIGHT
+  julian_midnight = int(julian)+1
+
   elapsed = []
   for timestamp in timestamps:
     # time = ephem.julian_date(datetime.datetime.fromtimestamp(timestamp))
     # t = ephem.julian_date(time.gmtime(timestamps[0])[:6])
-    elapsed.append((timestamp-midnight) / 60 / 60 / 24)
-  
+    elapsed.append((ephem.julian_date(time.gmtime(timestamp)[:6]) - julian_midnight))
+
     
   print('Creating baseline IDs...')
   bl_order = h5.root.bl_order
@@ -220,15 +228,16 @@ def main():
   now = datetime.datetime.now()
   medicina = Array(lat=latitude, long=longitude,elev=elevation,date=now)
   
+
   # If we were pointing at zenith, we would therefore be
   H, d =(0, 44.523577777777774)
   
   # Now it's time for a real source
-  CasA = makeSource(
-      name="CasA",
-      ra='23:23:26',
-      dec='58:48',
-      flux='2720'
+  CygA = makeSource(
+      name="CygA",
+      ra='19:59:28',
+      dec='40:44:02',
+      flux='1'
   )
   
   
@@ -238,20 +247,21 @@ def main():
     t = datetime.datetime.fromtimestamp(timestamp)
     print t
     medicina.update(t)
-    CasA.compute(medicina)
+    CygA.compute(medicina)
+    
+    #print CygA.alt, CygA.az
   
-   
     for baseline in baselines:
       vector = baseline[1]
-      H, d = (CasA.alt * 180 / np.pi, CasA.az* 180 / np.pi)
-      
+      H, d = (medicina.sidereal_time() - CygA.ra, CygA.dec)
       uvws.append(computeUVW(vector,H,d))
-      
 
-  
   # This array has shape t_len, num_ants, 3  
   uvws = np.array(uvws)
   uvws = uvws.reshape(uvws.size/bl_len/3,bl_len,3)
+  
+  #pkl.dump(uvws,open('uvws.pkl','w'))
+  #exit()
 
   print('\nReformatting HDF5 format -> FITS IDI UV_DATA')
   print('--------------------------------------------')
@@ -280,7 +290,7 @@ def main():
       flux[:,0,0] = h5data[t,:,bl,0,1]
       flux[:,0,1] = h5data[t,:,bl,0,0]
       
-      tbl_uv_data.data[i]['FLUX']     = flux.ravel()
+      tbl_uv_data.data[i]['FLX']     = flux.ravel()
       tbl_uv_data.data[i]['WEIGHT']   = weights
       
       tbl_uv_data.data[i]['UU']       = uvws[t][bl][0]
