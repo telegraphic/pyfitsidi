@@ -157,8 +157,8 @@ def makeSource(name,ra,dec,flux=0,epoch=2000):
     return body
 
 def main():
-  hdffile  = 'cygnus.h5c'
-  fitsfile = 'cygnus.fits'
+  hdffile  = '../hdf5/corr.2455676.70269.h5c.cyg'
+  fitsfile = 'corr.2455676.70269.fits'
   
 
   print('Opening HDF5 and FITS IDI tables')
@@ -218,7 +218,10 @@ def main():
     bl_id = 256*ant1 + ant2
     
     # Generate the XYZ vectors too
-    bl_vector = antennas[ant1] - antennas[ant2]
+    # From CASA measurement set definition
+    # uvw coordinates for the baseline from ANTENNE2 to ANTENNA1, 
+    # i.e. the baseline is equal to the difference POSITION2 - POSITION1. 
+    bl_vector = antennas[ant2] - antennas[ant1]
     baselines.append((bl_id,bl_vector))  
     
   print('Computing UVW coordinates...\n')
@@ -248,17 +251,16 @@ def main():
     print t
     medicina.update(t)
     CygA.compute(medicina)
-    
-    #print CygA.alt, CygA.az
   
     for baseline in baselines:
       vector = baseline[1]
       H, d = (medicina.sidereal_time() - CygA.ra, CygA.dec)
       uvws.append(computeUVW(vector,H,d))
 
-  # This array has shape t_len, num_ants, 3  
+  # This array has shape t_len, num_ants, 3
+  # and units of SECONDS
   uvws = np.array(uvws)
-  uvws = uvws.reshape(uvws.size/bl_len/3,bl_len,3)
+  uvws = uvws.reshape(uvws.size/bl_len/3,bl_len,3) / light_speed
   
   #pkl.dump(uvws,open('uvws.pkl','w'))
   #exit()
@@ -290,7 +292,7 @@ def main():
       flux[:,0,0] = h5data[t,:,bl,0,1]
       flux[:,0,1] = h5data[t,:,bl,0,0]
       
-      tbl_uv_data.data[i]['FLX']     = flux.ravel()
+      tbl_uv_data.data[i]['FLUX']     = flux.ravel()
       tbl_uv_data.data[i]['WEIGHT']   = weights
       
       tbl_uv_data.data[i]['UU']       = uvws[t][bl][0]
@@ -321,7 +323,7 @@ def main():
   print('\nWriting to file')
   print('---------------')  
   print "Finally, writing to a new file:"
-  filename = 'cygnus.fits'
+  filename = 'corr.2455676.70269.fits'
   if(os.path.isfile(filename)):
     print('Removing existing file...')
     os.remove(filename)

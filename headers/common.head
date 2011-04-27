@@ -1,7 +1,7 @@
 OBSCODE = 'MEDI0001'           /
 RDATE   = '2011-04-21'         /
 NO_STKD =                    1 /
-STK_1   =                   -1 / RR pol
+STK_1   =                    1 / I stokes
 NO_BAND =                    1 /
 NO_CHAN =                    1024 /
 REF_FREQ=   0.00000000000000000E+09 /
