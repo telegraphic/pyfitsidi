@@ -176,7 +176,7 @@ def main():
   h5data = h5.root.xeng_raw0
   
   # Shortcut it
-  #t_len = 10
+  t_len = 10
 
   print('\nGenerating file metadata')
   print('--------------------------')

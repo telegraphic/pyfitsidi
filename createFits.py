@@ -811,11 +811,11 @@ def config_source(tbl):
   source['EQUINOX'] = 'J2000'
   
   # Things I'm just making up
-  source['IFLUX']    = 1
-  source['QFLUX']    = 1
-  source['UFLUX']    = 1
-  source['VFLUX']    = 1
-  source['ALPHA']    = 1
+  source['IFLUX']    = 0
+  source['QFLUX']    = 0
+  source['UFLUX']    = 0
+  source['VFLUX']    = 0
+  source['ALPHA']    = 0
   source['FREQOFF']  = 0
   
   tbl.data[0] = source
@@ -1007,7 +1007,7 @@ def main():
   # UV_DATA data - MANDATORY
   print('Creating UV_DATA')
   print('------------------------------------')
-  (t_len, bl_len) = 91, 528
+  (t_len, bl_len) = 10, 528
   tbl_uv_data = make_uv_data(t_len, bl_len)
   #print tbl_uv_data.header.ascardlist()
   #tbl_uv_data = config_uv_data(tbl_uv_data)
