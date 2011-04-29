@@ -10,764 +10,15 @@ notes in this file are copied over from this document.
 Created by Danny Price on 2011-04-20.
 Copyright (c) 2011 The University of Oxford. All rights reserved.
 
-
-FITS-IDI Binary Tables
-----------------------
-ANTENNA Antenna polarization information
-ARRAY_GEOMETRY Time system information and antenna coordinates
-FLAG Flagged data
-FREQUENCY Frequency setups
-GAIN_CURVE Antenna gain curves
-INTERFEROMETER_MODEL Correlator model
-PHASE-CAL Phase cal measurements
-SOURCE Sources observed
-SYSTEM_TEMPERATURE System and antenna temperatures
-UV_DATA Visibility data
-
-we are also using the BANDPASS table of the proposed others:
-BANDPASS Bandpass functions
-BASELINE Baseline-specific gain factors
-CALIBRATION Gains as a function of time
-WEATHER Meteorological data
-
 """
 
 import sys, os
 import pyfits as pf, numpy as np,  tables as tb
 
-def generateCards(filename):
-  """
-  Parses a text file and generates a pyfits card list.
-  Do NOT feed this a full FITS file, feed it only a human-readable 
-  FITS header template. 
-  
-  A text file is opened, acard is created from each line, then verified. 
-  If the line does not pass verification, no card is appended.
-  """
-  infile = open(filename)
+# FITS IDI python module imports
+from pyFitsidi import *
 
-  cards = pf.CardList()
 
-  # Loop through each line, converting to a pyfits card
-  for line in infile.readlines():
-      line = line.rstrip('\n')
-      if(line == 'END'):
-        break
-      else:
-        c = pf.Card().fromstring(line)
-        c.verify() # This will attempt to fix issuesx[1]
-        cards.append(c)
-        
-  return cards
-
-def make_array_geometry():
-  """Creates a vanilla ARRAY_GEOMETRY table HDU.
-  Table is built with the following columns:
-
-  ARRAY_GEOMETRY table data
-  -------------------------
-  ANNAME:  Antenna name
-  STABXYZ: Antenna relative position vector ECI components, in meters
-  DERXYZ:  Antenna velocity vector components, in meters/sec
-  ORBPARM: Orbital parameters
-  NOSTA:   Antenna ID number for station
-  MNTSTA:  Antenna mount type (0 is alt-azimuth)
-  STAXOF:  Antenna axis offset, in meters
-  
-  optional:
-  DIAMETER: Antenna diameter
-  
-  """
-  
-  # Generate the columns for the table header
-  c = []
-
-  c.append(pf.Column(name='ANNAME',  format='8A',\
-    array=np.zeros(32,dtype='a8')))   
-  
-  c.append(pf.Column(name='STABXYZ', format='3D', \
-    unit='METERS',array=np.zeros(32,dtype='3float64')))
-  
-  c.append(pf.Column(name='DERXYZ',  format='3E', \
-    unit='METERS/SEC', array=np.zeros(32,dtype='3float32')))
-  
-  c.append(pf.Column(name='ORBPARM', format='1D',\
-    array=np.zeros(32,dtype='float64')))
-  
-  c.append(pf.Column(name='NOSTA',   format='1J',\
-    array=np.zeros(32,dtype='int32')))
-  
-  c.append(pf.Column(name='MNTSTA',  format='1J',\
-    array=np.zeros(32,dtype='int32')))
-  
-  c.append(pf.Column(name='STAXOF',  format='3E', \
-    unit='METERS', array=np.zeros(32,dtype='3float32')))
-
-  c.append(pf.Column(name='DIAMETER',  format='1E', \
-    unit='METERS', array=np.zeros(32,dtype='float32')))
-
-  coldefs = pf.ColDefs(c)
-  tblhdu = pf.new_table(coldefs)
-
-  # Update the header with values from the header files
-  cards = generateCards('headers/array_geometry.head')
-  for card in cards:
-    tblhdu.header.update(card.key, card.value, card.comment)
-
-  # Override with common values
-  cards = generateCards('headers/common.head')
-  for card in cards:
-    tblhdu.header.update(card.key, card.value, card.comment)
-  
-  return tblhdu
-    
-def make_antenna():
-  """
-  Creates a vanilla ANTENNA table HDU
-  Table is built with the following columns:
-  
-  ANTENNA table data
-  -------------------
-  TIME:   Difference of antenna table time interval centre time and
-          RDATE 0 hours
-  TIME_INTERVAL: Antenna table time interval width
-  ANNAME: Antenna name, should match value in ARRAY_GEOMETRY
-  ANTENNA_NO: Antemma ID number for station
-  ARRAY:    Array ID number
-  FREQID:   Frequency setup ID number
-  NO_LEVELS:Number of digitiser levels
-  POLYTYA:  Feed A polarisation direction
-  POLAA:    Feed A polarisation (degrees)
-  POLCALA:  Feed A polarisation parameters
-  POLYTYB:  As above, for feed B
-  POLAB:    As above, for feed B
-  POLCALB:  As above, for feed B
-  """
-  
-  c = []
-  
-  c.append(pf.Column(name='TIME', format='1D',\
-   unit='DAYS',array=np.zeros(32,dtype='float32')))
-   
-  c.append(pf.Column(name='TIME_INTERVAL', format='1E',\
-    unit='DAYS', array=np.zeros(32,dtype='float32')))
-  
-  c.append(pf.Column(name='ANNAME', format='8A',\
-    array=np.zeros(32,dtype='a8')))
-  
-  c.append(pf.Column(name='ANTENNA_NO', format='1J',\
-    array=np.zeros(32,dtype='int32')))
-  
-  c.append(pf.Column(name='ARRAY', format='1J',\
-    array=np.zeros(32,dtype='int32')))
-  
-  c.append(pf.Column(name='FREQID', format='1J',\
-    array=np.zeros(32,dtype='int32')))
-  
-  c.append(pf.Column(name='NO_LEVELS',  format='1J',\
-    array=np.zeros(32,dtype='int32')))
-  
-  c.append(pf.Column(name='POLTYA', format='1A',\
-    array=np.zeros(32,dtype='a1')))
-  
-  c.append(pf.Column(name='POLAA', format='1E',\
-    unit='DEGREES', array=np.zeros(32,dtype='float32')))
-  
-  #c.append(pf.Column(name='POLCALA', format='1E',\
-  #  array=np.zeros(32,dtype='float32')))
-  
-  c.append(pf.Column(name='POLTYB', format='1A',\
-    array=np.zeros(32,dtype='a1')))
-  
-  c.append(pf.Column(name='POLAB', format='1E',\
-    unit='DEGREES', array=np.zeros(32,dtype='float32')))
-  
-  #c.append(pf.Column(name='POLCALB', format='1E',\
-  #  array=np.zeros(32,dtype='float32')))
-  
-  coldefs = pf.ColDefs(c)
-  tblhdu = pf.new_table(coldefs)
-  
-  cards = generateCards('headers/antenna.head')
-  for card in cards:
-    tblhdu.header.update(card.key, card.value, card.comment)
-
-  # Override with common values
-  cards = generateCards('headers/common.head')
-  for card in cards:
-    tblhdu.header.update(card.key, card.value, card.comment)
-
-  return tblhdu
-
-def make_frequency():
-  """
-  Creates a vanilla FREQUENCY table HDU
-  Table is built with the following columns:
-  
-  FREQUENCY table data
-  --------------------
-  FREQID:   Frequency setup ID number
-  BANDFREQ: Frequency band base offset (Hz)
-  CH_WIDTH: Frequency channel width (Hz)
-  TOTAL_BANDWIDTH: Frequency bandwidth (Hz)
-  SIDEBAND: Sideband flag (1 indicates upper sideband)
-  BB_CHAN:  ? 
-  
-  """
-  
-  c = []
-  
-  c.append(pf.Column(name='FREQID',   format='1J',\
-    array=np.zeros(1,dtype='int32')))
-    
-  c.append(pf.Column(name='BANDFREQ', format='1D',\
-    unit='HZ', array=np.zeros(1,dtype='float64')))
-  
-  c.append(pf.Column(name='CH_WIDTH', format='1E',\
-    unit='HZ', array=np.zeros(1,dtype='float32')))
-  
-  c.append(pf.Column(name='TOTAL_BANDWIDTH', format='1E',\
-    unit='HZ', array=np.zeros(1,dtype='float32')))
-  
-  c.append(pf.Column(name='SIDEBAND', format='1J',\
-    array=np.zeros(1,dtype='int32')))
-  
-  #c.append(pf.Column(name='BB_CHAN',  format='1J',\
-  #  array=np.zeros(1,dtype='int32')))
-  
-
-  coldefs = pf.ColDefs(c)
-  tblhdu = pf.new_table(coldefs)
-  
-  cards = generateCards('headers/frequency.head')
-  for card in cards:
-    tblhdu.header.update(card.key, card.value, card.comment)
-    
-  # Override with common values
-  cards = generateCards('headers/common.head')
-  for card in cards:
-    tblhdu.header.update(card.key, card.value, card.comment)  
-    
-  return tblhdu
-  
-def make_bandpass():
-  """
-  Creates a vanilla BANDPASS table HDU
-  Table is built with the following columns:
-  
-  BANDPASS table data
-  --------------------
-
-  TIME: Difference of bandpass table time int center time and
-        RDATE 0 hours
-  TIME_INTERVAL: Bandpass table time interval width
-  SOURCE_ID:  Source ID number
-  ANTENNA_NO: Antenna ID number for station
-  ARRAY:      Array ID number
-  FREQID:     Frequency setup ID number (should match ANTENNA)
-  BANDWIDTH:  Frequency band width described by bandpass
-  BAND_FREQ:  Frequency band base offset
-  REFANT_1:   Reference antenna ID number
-  BREAL_1:    Bandpass response real componet
-  BIMAG_1:    Bandpass response imaginary component
-  
-  """
-  c = []
-  
-  c.append(pf.Column(name='TIME', format='1D',\
-   unit='DAYS', array=np.zeros(1,dtype='float64')))
-   
-  c.append(pf.Column(name='TIME_INTERVAL', format='1E',\
-   unit='DAYS',array=np.zeros(1,dtype='float32')))
-   
-  c.append(pf.Column(name='SOURCE_ID', format='1J',\
-    array=np.zeros(1,dtype='int32')))
-    
-  c.append(pf.Column(name='ANTENNA_NO',format='1J',\
-    array=np.zeros(1,dtype='int32')))
-    
-  c.append(pf.Column(name='ARRAY',     format='1J',\
-    array=np.zeros(1,dtype='int32')))
-    
-  c.append(pf.Column(name='FREQID',    format='1J',\
-    array=np.zeros(1,dtype='int32')))
-    
-  c.append(pf.Column(name='BANDWIDTH', format='1E',\
-    unit='HZ', array=np.zeros(1,dtype='float32')))
-    
-  c.append(pf.Column(name='BAND_FREQ', format='1D',\
-   unit='HZ', array=np.zeros(1,dtype='float64')))
-   
-  c.append(pf.Column(name='REFANT_1',  format='1J',\
-    array=np.zeros(1,dtype='int32')))
-    
-  c.append(pf.Column(name='BREAL_1',  format='1024E',\
-    array=np.zeros(1,dtype='1024float32')))
-    
-  c.append(pf.Column(name='BIMAG_1',  format='1024E',\
-    array=np.zeros(1,dtype='1024float32')))
-  
-  coldefs = pf.ColDefs(c)
-  tblhdu = pf.new_table(coldefs)
-  
-  cards = generateCards('headers/bandpass.head')
-  for card in cards:
-    tblhdu.header.update(card.key, card.value, card.comment)  
-    
-  # Override with common values
-  cards = generateCards('headers/common.head')
-  for card in cards:
-    tblhdu.header.update(card.key, card.value, card.comment)  
-    
-  return tblhdu  
-
-def make_source():
-    """
-    Creates a vanilla SOURCE table HDU
-    Table is built with the following columns:
-
-    SOURCE table data
-    --------------------
-    SOURCE_ID Source ID number
-    SOURCE    Source name
-    QUAL      Source qualifier number.
-    CALCODE   Source calibrator code. 
-    FREQID    Source frequency ID
-    IFLUX     Source I flux density
-    QFLUX     Source Q flux density
-    UFLUX     Source U flux density
-    VFLUX     SourceV flux density
-    ALPHA     Source spectral index
-    FREQOFF   Source frequency offset
-    RAEPO     Source J2000 equatorial position RA coordinate
-    DECPO     Source J2000 equatorial position DEC coordinate
-    EQUINOX   Mean Equinox
-    RAAPP     Source apparent equatorial position RA coordinate
-    DECAPP    Source apparent equatorial position DEC coordinate
-    SYSVEL    Systematic velocity.
-    VELTYP    Systematic velocity reference frame.
-    VELDEF    Systematic velocity convention.
-    RESTFREQ  Line rest frequency.
-    PMRA      Source proper motion RA coordinate
-    PMDEC     Source proper motion DEC coordinate
-    PARALLAX  Source parallax. 
-
-    """
-
-    c=[]
-
-    c.append(pf.Column(name='SOURCE_ID',    format='1J',\
-      array=np.zeros(1,dtype='int32')))
-      
-    c.append(pf.Column(name='SOURCE',   format='16A',\
-      array=np.zeros(1,dtype='16a')))
-      
-    c.append(pf.Column(name='QUAL',     format='1J',\
-      array=np.zeros(1,dtype='int32')))
-      
-    c.append(pf.Column(name='CALCODE',  format='4A',\
-      array=np.zeros(1,dtype='4a')))
-      
-    c.append(pf.Column(name='FREQID',   format='1J',\
-      array=np.zeros(1,dtype='int32')))
-      
-    c.append(pf.Column(name='IFLUX',    format='1E',\
-      array=np.zeros(1,dtype='float32')))
-    
-    c.append(pf.Column(name='QFLUX',    format='1E',\
-      array=np.zeros(1,dtype='float32')))
-    
-    c.append(pf.Column(name='UFLUX',    format='1E',\
-      array=np.zeros(1,dtype='float32')))
-    
-    c.append(pf.Column(name='VFLUX',    format='1E',\
-      array=np.zeros(1,dtype='float32')))
-    
-    c.append(pf.Column(name='ALPHA',    format='1E',\
-      array=np.zeros(1,dtype='float32')))
-    
-    c.append(pf.Column(name='FREQOFF',  format='1E',
-      array=np.zeros(1,dtype='float32')))
-    
-    c.append(pf.Column(name='RAEPO',    format='1D',\
-     unit='DEGREES', array=np.zeros(1,dtype='float64')))
-    
-    c.append(pf.Column(name='DECEPO',    format='1D',\
-     unit='DEGREES', array=np.zeros(1, dtype='float64')))
-    
-    c.append(pf.Column(name='EQUINOX',    format='8A',\
-      array=np.zeros(1,dtype='8a')))
-      
-    c.append(pf.Column(name='RAAPP',    format='1D',\
-     unit='DEGREES', array=np.zeros(1,dtype='float64')))
-     
-    c.append(pf.Column(name='DECAPP',   format='1D',\
-     unit='DEGREES', array=np.zeros(1,dtype='float64')))
-    
-    c.append(pf.Column(name='SYSVEL',   format='1D',\
-      unit='METERS/SEC', array=np.zeros(1,dtype='float64')))
-    
-    c.append(pf.Column(name='VELTYP',   format='8A',\
-      array=np.zeros(1,dtype='8a')))
-    
-    c.append(pf.Column(name='VELDEF',   format='8A',\
-      array=np.zeros(1,dtype='8a')))
-    
-    c.append(pf.Column(name='RESTFREQ', format='1D',\
-     unit='HZ', array=np.zeros(1,dtype='float64')))
-    
-    c.append(pf.Column(name='PMRA',     format='1D',\
-     unit='DEGREES/DAY', array=np.zeros(1,dtype='float64')))
-    
-    c.append(pf.Column(name='PMDEC',    format='1D',\
-     unit='DEGREES/DAY', array=np.zeros(1,dtype='float64')))
-    
-    c.append(pf.Column(name='PARALLAX', format='1E',\
-     unit='ARCSEC', array=np.zeros(1,dtype='float32')))
-
-    coldefs = pf.ColDefs(c)
-    tblhdu = pf.new_table(coldefs)
-
-    cards = generateCards('headers/source.head')
-    for card in cards:
-      tblhdu.header.update(card.key, card.value, card.comment)
-
-    # Override with common values
-    cards = generateCards('headers/common.head')
-    for card in cards:
-      tblhdu.header.update(card.key, card.value, card.comment)
-        
-    return tblhdu
-
-def make_uv_data(t_len, bl_len):
-  """
-  Creates a vanilla UV_DATA table HDU
-  Table is built with the following columns:
-  
-  UV_DATA table data
-  --------------------
-  UU           Baseline vector U coordinate 
-  VV           Baseline vector V coordinate
-  WW           Baseline vector W coordinate
-  DATE         UTC Julian day value for time 00:00:00 
-               on the day of the observation
-  TIME         Fraction of Julian day from UTC time 00:00:00 to 
-               UTC time of observation on day of observation.
-  BASELINE     Antenna baseline pair ID.
-  FILTER       VLBA filter ID
-  SOURCE       Data source ID
-  FREQID       Data frequency setup ID
-  INTTIM       Data integration time
-  WEIGHT       Data weights (one element for each freq channel)
-  GATEID       VLBA gate ID
-  FLUX         UV visibility data matrix
-  
-  """
-  c = []                
-  
-  numrows = t_len*bl_len
-                                          
-  c.append(pf.Column(name='UU',        format='1E',\
-    unit='SECONDS', array=np.zeros(numrows,dtype='float32')))
-   
-  c.append(pf.Column(name='VV',        format='1E',\
-    unit='SECONDS', array=np.zeros(numrows,dtype='float32')))
-   
-  c.append(pf.Column(name='WW',        format='1E',\
-    unit='SECONDS', array=np.zeros(numrows,dtype='float32')))
-   
-  c.append(pf.Column(name='DATE',      format='1D',\
-    unit='DAYS', array=np.zeros(numrows,dtype='float64')))
-   
-  c.append(pf.Column(name='TIME',      format='1D',\
-    unit='DAYS', array=np.zeros(numrows,dtype='float64')))
-   
-  c.append(pf.Column(name='BASELINE',  format='1J',\
-    array=np.zeros(numrows,dtype='int')))
-
-  c.append(pf.Column(name='SOURCE',    format='1J',\
-    array=np.zeros(numrows,dtype='int32')))
-    
-  c.append(pf.Column(name='FREQID',    format='1J',\
-    array=np.zeros(numrows,dtype='int32')))
-    
-  c.append(pf.Column(name='INTTIM',    format='1E',\
-    unit='SECONDS', array=np.zeros(numrows,dtype='float32')))
-    
-  c.append(pf.Column(name='WEIGHT',    format='2048E',\
-    array=np.zeros(numrows,dtype='2048float32')))
-    
-  c.append(pf.Column(name='FLUX',      format='2048E',\
-    unit='UNCALIB', array=np.zeros(numrows,dtype='2048float32')))
-  
-  coldefs = pf.ColDefs(c)
-  tblhdu = pf.new_table(coldefs)
-  
-  cards = generateCards('headers/uv_data.head')
-  for card in cards:
-    tblhdu.header.update(card.key, card.value, card.comment)
-  
-  # Override with common values
-  cards = generateCards('headers/common.head')
-  for card in cards:
-    tblhdu.header.update(card.key, card.value, card.comment)  
-        
-  return tblhdu
-
-def make_interferometer_model():
-  """
-  Creates a vanilla INTERFEROMETER_MODEL table HDU.
-  Note this table is optional, and is not included in Medicina FITS IDI
-  Table is built with the following columns:
-  
-  INTERFEROMETER_MODEL table data
-  --------------------------------
-  
-  TIME          Starting time of interval
-  TIME_INTERVAL Duration of interval
-  SOURCE_ID     Source ID number
-  ANTENNA_NO    Antenna number
-  ARRAY         Array number
-  FREQID        Frequency setup number
-  I.FAR.ROT     Ionospheric Faraday rotation
-  FREQ_VAR      Time-variable frequency offsets
-  PDELAY_1      Phase delay polynomials for polarization 1
-  GDELAY_1      Group delay polynomials for polarization 1
-  PRATE_1       Phase delay rate polynomials for polarization 1
-  GRATE_1       Group rate polynomials for polarization 1
-  DISP_1        Dispersive delay for polarization 1 at 1m wavelength
-  DDISP_1       Rate of change of dispersive del for pol 1 at 1m
-  
-  """
-  
-  c = []
-                                        
-  c.append(pf.Column(name='TIME',         format='1D', unit='DAYS'))
-  c.append(pf.Column(name='TIME_INTERVAL',format='1E', unit='DAYS'))
-  c.append(pf.Column(name='SOURCE_ID',    format='1J'))
-  c.append(pf.Column(name='ANTENNA_NO',   format='1J'))
-  c.append(pf.Column(name='ARRAY',        format='1J'))
-  c.append(pf.Column(name='FREQID',       format='1J'))
-  c.append(pf.Column(name='I.FAR.ROT',    format='1E', unit='RAD/M**2'))
-  c.append(pf.Column(name='FREQ.VAR',     format='1E', unit='HZ'))
-  c.append(pf.Column(name='PDELAY_1',     format='1E', unit='TURNS'))
-  c.append(pf.Column(name='GDELAY_1',     format='1E', unit='SECONDS'))
-  c.append(pf.Column(name='PRATE_1',      format='1E', unit='HZ'))
-  c.append(pf.Column(name='GRATE_1',      format='1E', unit='SEC/SEC'))
-  c.append(pf.Column(name='DISP_1',       format='1E', unit='SECONDS'))
-  c.append(pf.Column(name='DDISP_1',      format='1E', unit='SEC/SEC'))
-
-  coldefs = pf.ColDefs(c)
-  tblhdu = pf.new_table(coldefs)
-
-  cards = generateCards('headers/interferometer_model.head')
-  for card in cards:
-    tblhdu.header.update(card.key, card.value, card.comment)
-
-  # Override with common values
-  cards = generateCards('headers/common.head')
-  for card in cards:
-    tblhdu.header.update(card.key, card.value, card.comment) 
-       
-  return tblhdu      
-                                    
-def make_system_temperature():
-  """
-  Creates a vanilla SYSTEM_TEMPERATURE table HDU
-  This is an optional table (we will not include it)
-  Table is built with the following columns:
-  
-  SYSTEM_TEMPERATURE table data
-  --------------------------------
-  
-  TIME          Central time of interval covered
-  TIME_INTERVAL Duration of interval
-  SOURCE_ID     Source ID number
-  ANTENNA_NO    Antenna number
-  ARRAY         Array number
-  FREQID        Frequency setup number
-  TSYS_1        System temperatures for polarization 1
-  TANT_1        Antenna temperatures for polarization 1
-  
-  """
-  c = []
-  
-  c.append(pf.Column(name='TIME',           format='1D', unit='DAYS'))
-  c.append(pf.Column(name='TIME_INTERVAL',  format='1E', unit='DAYS'))
-  c.append(pf.Column(name='SOURCE_ID',      format='1J'))
-  c.append(pf.Column(name='ANTENNA_NO',     format='1J'))
-  c.append(pf.Column(name='ARRAY',          format='1J'))
-  c.append(pf.Column(name='FREQID',         format='1J'))
-  c.append(pf.Column(name='TSYS_1',         format='1E', unit='KELVIN'))
-  c.append(pf.Column(name='TANT_1',         format='1E', unit='KELVIN'))
-
-  coldefs = pf.ColDefs(c)
-  tblhdu = pf.new_table(coldefs)
-  
-  cards = generateCards('headers/system_temperature.head')
-  for card in cards:
-    tblhdu.header.update(card.key, card.value, card.comment)
-
-  # Override with common values
-  cards = generateCards('headers/common.head')
-  for card in cards:
-    tblhdu.header.update(card.key, card.value, card.comment)
-  
-  return tblhdu   
-
-def make_gain_curve():
-  """
-  Creates a vanilla GAIN_CURVE table HDU
-  This is an optional table (we will not include it)
-  Table is built with the following columns:
-  
-  GAIN_CURVE table data
-  --------------------------------
-  
-  ANTENNA_NO  Antenna number
-  ARRAY       Array number
-  FREQID      Frequency setup number
-  TYPE_1      Gain curve types for polarization 1
-  NTERM_1     Numbers of terms or entries for polarization 1
-  X_TYP_1     x value types for polarization 1
-  Y_TYP_1     y value types for polarization 1
-  X_VAL_1     x values for polarization 1
-  Y_VAL_1     y values for polarization 1
-  GAIN_1      Relative gain values for polarization 1
-  SENS_1      Sensitivities for polarization 1
-  
-  """
-
-  c = []
-  
-  c.append(pf.Column(name='ANTENNA_NO',  format='1J'))
-  c.append(pf.Column(name='ARRAY',       format='1J'))
-  c.append(pf.Column(name='FREQID',      format='1J'))
-  c.append(pf.Column(name='TYPE_1',      format='1J'))
-  c.append(pf.Column(name='NTERM_1',     format='1J'))
-  c.append(pf.Column(name='X_TYP_1',     format='1J'))
-  c.append(pf.Column(name='Y_TYP_1',     format='1J'))
-  c.append(pf.Column(name='X_VAL_1',     format='1J'))
-  c.append(pf.Column(name='Y_VAL_1',     format='1J'))
-  c.append(pf.Column(name='GAIN_1',      format='1J'))
-  c.append(pf.Column(name='SENS_1',      format='1J', unit='K/JY'))
-  
-  coldefs = pf.ColDefs(c)
-  tblhdu = pf.new_table(coldefs)
-
-  cards = generateCards('headers/gain_curve.head')
-  for card in cards:
-    tblhdu.header.update(card.key, card.value, card.comment)
-
-  # Override with common values
-  cards = generateCards('headers/common.head')
-  for card in cards:
-    tblhdu.header.update(card.key, card.value, card.comment)
-
-  return tblhdu
-
-def make_phase_cal():
-  """
-  Creates a vanilla PHASE-CAL table HDU
-  This is an optional table (we will not include it)
-  
-  Table is built with the following columns:
-
-  PHASE-CAL table data
-  --------------------------------
-
-  TIME          Central time of interval covered
-  TIME_INTERVAL Duration of interval
-  SOURCE_ID     Source ID number
-  ANTENNA_NO    Antenna number
-  ARRAY         Array number
-  FREQID        Frequency setup number
-  CABLE_CAL     Cable calibration measurement
-  STATE_1       State counts for polarization 1
-  PC_FREQ_1     Phase cal tone frequencies for polarization 1
-  PC_REAL_1     real parts of phase-cal measurements for pol 1
-  PC_IMAG_1     imaginary parts of phasecal measurements for pol 1
-  PC_RATE_1     phase-cal rates for polarization 1
-
-  """
-
-  c = []
-                                        
-  c.append(pf.Column(name='TIME',          format='1D', unit='DAYS'))
-  c.append(pf.Column(name='TIME_INTERVAL', format='1E', unit='DAYS'))
-  c.append(pf.Column(name='SOURCE_ID',     format='1J'))
-  c.append(pf.Column(name='ANTENNA_NO',    format='1J'))
-  c.append(pf.Column(name='ARRAY',         format='1J'))
-  c.append(pf.Column(name='FREQID',        format='1J'))
-  c.append(pf.Column(name='CABLE_CAL',     format='1E', unit='SECONDS'))
-  c.append(pf.Column(name='STATE_1',       format='1J', unit='PERCENT'))
-  c.append(pf.Column(name='PC_FREQ_1',     format='1J', unit='HZ'))
-  c.append(pf.Column(name='PC_REAL_1',     format='1J'))
-  c.append(pf.Column(name='PC_IMAG_1',     format='1J'))
-  c.append(pf.Column(name='PC_RATE_1',     format='1J', unit='SEC/SEC'))
-
-  coldefs = pf.ColDefs(c)
-  tblhdu = pf.new_table(coldefs)
-
-  cards = generateCards('headers/phase_cal.head')
-  for card in cards:
-    tblhdu.header.update(card.key, card.value, card.comment)
-
-  # Override with common values
-  cards = generateCards('headers/common.head')
-  for card in cards:
-    tblhdu.header.update(card.key, card.value, card.comment)
-    
-  return tblhdu
-
-def make_flag():
-  """
-  Creates a vanilla FLAGL table HDU
-  Table is built with the following columns:
-
-  FLAG table data
-  --------------------------------
-
-  SOURCE_ID Source ID number
-  ARRAY     Array number
-  ANTS      Antenna numbers
-  FREQID    Frequency setup number
-  TIMERANG  Time range
-  BANDS     Band flags
-  CHANS     Channel range
-  PFLAGS    Polarization flags
-  REASON    Reason for flag
-  SEVERITY  Severity code
-
-  """
-
-  c = []
-    
-  c.append(pf.Column(name='SOURCE_ID', format='1J'))
-  c.append(pf.Column(name='ARRAY',     format='1J'))
-  c.append(pf.Column(name='ANTS',      format='2J'))
-  c.append(pf.Column(name='FREQID',    format='1J'))
-  c.append(pf.Column(name='TIMERANG',  format='2E', unit='DAYS'))
-  c.append(pf.Column(name='BANDS',     format='1J'))
-  c.append(pf.Column(name='CHANS',     format='2J'))
-  c.append(pf.Column(name='PFLAGS',    format='4J'))
-  c.append(pf.Column(name='REASON',    format='24A'))
-  c.append(pf.Column(name='SEVERITY',  format='1J'))
-
-  coldefs = pf.ColDefs(c)
-  tblhdu = pf.new_table(coldefs)
-  
-  cards = generateCards('headers/flag.head')
-  for card in cards:
-    tblhdu.header.update(card.key, card.value, card.comment)
-  
-  # Override with common values
-  cards = generateCards('headers/common.head')
-  for card in cards:
-    tblhdu.header.update(card.key, card.value, card.comment)  
-    
-  return tblhdu
-  
 def config_antenna(tbl):
   """
   Configures the antenna table with some default values
@@ -776,15 +27,15 @@ def config_antenna(tbl):
   antenna = tbl.data
   for i in range(0,tbl.data.size):
     
-    antenna[i]['ANNAME'] = 'MED_%i'%i
-    antenna[i]['ANTENNA_NO'] = i
-    antenna[i]['ARRAY'] = 1
-    antenna[i]['FREQID'] = 1
-    antenna[i]['NO_LEVELS'] = 12
-    antenna[i]['POLTYA'] = 'R'
-    antenna[i]['POLTYB'] = 'R'
-    antenna[i]['POLAA'] = 0
-    antenna[i]['POLAB'] = 0
+    antenna[i]['ANNAME']      = 'MED_%i'%i
+    antenna[i]['ANTENNA_NO']  = i
+    antenna[i]['ARRAY']       = 1
+    antenna[i]['FREQID']      = 1
+    antenna[i]['NO_LEVELS']   = 12
+    antenna[i]['POLTYA']      = 'R'
+    antenna[i]['POLTYB']      = 'R'
+    antenna[i]['POLAA']       = 0
+    antenna[i]['POLAB']       = 0
     
     
   tbl.data = antenna
@@ -802,13 +53,13 @@ def config_source(tbl):
   source = tbl.data[0]
   
   source['SOURCE_ID'] = 1
-  source['SOURCE'] = sourcename
-  source['VELDEF'] = 'RADIO'
-  source['VELTYP'] = 'GEOCENTR'
-  source['FREQID'] = 1
-  source['RAEPO'] = 299.8667
-  source['DECEPO'] = 40.7339
-  source['EQUINOX'] = 'J2000'
+  source['SOURCE']    = sourcename
+  source['VELDEF']    = 'RADIO'
+  source['VELTYP']    = 'GEOCENTR'
+  source['FREQID']    = 1
+  source['RAEPO']     = 299.8667
+  source['DECEPO']    = 40.7339
+  source['EQUINOX']   = 'J2000'
   
   # Things I'm just making up
   source['IFLUX']    = 0
@@ -829,11 +80,11 @@ def config_frequency(tbl):
 
   frequency = tbl.data[0]
 
-  frequency['FREQID'] = 1
-  frequency['BANDFREQ'] = 0
-  frequency['CH_WIDTH'] = 20.0/1024.0
-  frequency['TOTAL_BANDWIDTH'] = 20*10**6
-  frequency['SIDEBAND'] = 1
+  frequency['FREQID']         = 1
+  frequency['BANDFREQ']       = 0
+  frequency['CH_WIDTH']       = 20.0/1024.0 * 10**6
+  frequency['TOTAL_BANDWIDTH']= 20*10**6
+  frequency['SIDEBAND']       = 1
 
   tbl.data[0] = frequency
 
@@ -907,57 +158,61 @@ def config_array_geometry(tbl):
   tbl.data = geometry
 
   return tbl
-  
+
+def config_system_temperature(tbl):
+  """
+  Configures the system_temperature table with values for Medicina
+  """
     
+  system_temp = tbl.data
+  
+  for i in range(0, tbl.data.size): 
+    system_temp[i]['TIME'] = 0
+    system_temp[i]['TIME_INTERVAL'] = 365 
+    system_temp[i]['SOURCE_ID']  = 1 
+    system_temp[i]['ANTENNA_NO'] = i 
+    system_temp[i]['ARRAY'] = 1
+    system_temp[i]['FREQID'] = 1
+    system_temp[i]['TSYS_1'] = 87 
+    system_temp[i]['TANT_1'] = 47
+  
+  tbl.data = system_temp
+  
+  return tbl 
      
 def main():
   """
   Generate a blank FITS IDI file for use in Medicina BEST-2
   32 element array.
   """
-
-  print('Creating Primary HDU')
-  print('------------------------------------\n')
+  
+  # What are the filenames for our datasets?
+  hdffile  = '../hdf5/corr.2455676.70269.h5c.cyg'
+  fitsfile = 'corr.2455676.70269.fits'
   
   # Make a new blank FITS HDU
-  hdu = pf.PrimaryHDU()
+  hdu = make_primary()
   
-  # Primary HDU is generated solely from primary.head file
-  filename = 'headers/primary.head'
-  cards = generateCards(filename)
-
-  for card in cards:
-    hdu.header.update(card.key, card.value, card.comment)
-  
-  hdu.verify() # Will raise a warning if there's an issue  
-  print hdu.header.ascardlist()
-  print('\n')
-
   # Go through and generate required tables
-  print('Creating ARRAY_GEOMETRY')
-  print('------------------------------------')  
-  tbl_array_geometry = make_array_geometry()
+  tbl_array_geometry = make_array_geometry(num_rows=32)
   tbl_array_geometry = config_array_geometry(tbl_array_geometry)
   #print tbl_array_geometry.header.ascardlist()
-  print('\n')
   
-  print('Creating FREQUENCY')
-  print('------------------------------------')
-  tbl_frequency = make_frequency()
+  tbl_frequency = make_frequency(num_rows=1)
   tbl_frequency = config_frequency(tbl_frequency)
   #print tbl_frequency.header.ascardlist()
   print('\n')
 
   print('Creating SOURCE')
   print('------------------------------------')
-  tbl_source = make_source()
+  tbl_source = make_source(num_rows=1)
   tbl_source = config_source(tbl_source)
   #print tbl_source.header.ascardlist()
   print('\n')
 
   print('Creating ANTENNA')
   print('------------------------------------')
-  tbl_antenna = make_antenna()
+  tbl_antenna = make_antenna(num_rows=32)
   tbl_antenna = config_antenna(tbl_antenna)
   #print tbl_antenna.header.ascardlist()
   print('\n')
@@ -991,11 +246,12 @@ def main():
   # print('\n')
 
   # SYSTEM_TEMPERATURE table is optional
-  # print('Creating SYSTEM_TEMPERATURE')
-  # print('------------------------------------')
-  # tbl_system_temperature = make_system_temperature()
+  print('Creating SYSTEM_TEMPERATURE')
+  print('------------------------------------')
+  tbl_system_temperature = make_system_temperature(num_rows=32)
+  tbl_system_temperature = config_system_temperature(tbl_system_temperature)
   # print tbl_system_temperature.header.ascardlist()
-  # print('\n')
+  print('\n')
   
   # Bandpass is optional too
   # print('Creating BANDPASS')
@@ -1007,10 +263,28 @@ def main():
   # UV_DATA data - MANDATORY
   print('Creating UV_DATA')
   print('------------------------------------')
-  (t_len, bl_len) = 10, 528
-  tbl_uv_data = make_uv_data(t_len, bl_len)
+  # Open hdf5 table
+  print('Opening HDF5 table %s'%hdffile)
+  h5 = tb.openFile(hdffile)
+  
+  # Data is stored in multidimensional array called xeng_raw0
+  # time, channels, baselines, polarisation, then data=(real, imaginary) 
+  (t_len, chan_len, bl_len, pol_len, ri_len) = h5.root.xeng_raw0.shape
+  print('Data dimensions: %i dumps, %i chans, %i baselines, %i pols, %i data (real/imag)'\
+  %(t_len, chan_len, bl_len, pol_len, ri_len))
+  
+  # Shortcut it!
+  # t_len = 10
+  
+  print('Generating blank UV_DATA rows...')
+  tbl_uv_data = make_uv_data(num_rows=t_len*bl_len)
+
+  
+  print('Now filling FITS file with data from HDF file...')
+  # The config function is in a seperate file, so import it
+  import config_uv_data
+  tbl_uv_data = config_uv_data.config_uv_data(h5,tbl_uv_data,shortcut=False)
   #print tbl_uv_data.header.ascardlist()
-  #tbl_uv_data = config_uv_data(tbl_uv_data)
   print('\n')
 
   hdulist = pf.HDUList(
@@ -1023,7 +297,7 @@ def main():
               # tbl_bandpass,
               # tbl_gain_curve,
               # tbl_interferometer_model,
-              # tbl_system_temperature,
+              tbl_system_temperature,
               # tbl_phase_cal,
               tbl_uv_data
               ])
@@ -1031,13 +305,12 @@ def main():
   print('Verifying integrity...')            
   hdulist.verify()
   
-  
-  filename = 'corr.2455676.70269.fits'
-  if(os.path.isfile(filename)):
+
+  if(os.path.isfile(fitsfile)):
     print('Removing existing file...')
-    os.remove(filename)
+    os.remove(fitsfile)
   print('Writing to file...')
-  hdulist.writeto(filename)
+  hdulist.writeto(fitsfile)
 
   print('Done.')
 

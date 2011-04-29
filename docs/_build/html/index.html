@@ -1,0 +1,438 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Welcome to CASPER FITS IDI’s documentation! &mdash; CASPER FITS IDI v0.1 documentation</title>
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="CASPER FITS IDI v0.1 documentation" href="#" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="#">CASPER FITS IDI v0.1 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="welcome-to-casper-fits-idi-s-documentation">
+<h1>Welcome to CASPER FITS IDI&#8217;s documentation!<a class="headerlink" href="#welcome-to-casper-fits-idi-s-documentation" title="Permalink to this headline">¶</a></h1>
+<p>Contents:</p>
+<div class="toctree-wrapper compound">
+<ul class="simple">
+</ul>
+</div>
+</div>
+<div class="section" id="indices-and-tables">
+<h1>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Permalink to this headline">¶</a></h1>
+<ul class="simple">
+<li><a class="reference internal" href="genindex.html"><em>Index</em></a></li>
+<li><a class="reference internal" href="py-modindex.html"><em>Module Index</em></a></li>
+<li><a class="reference internal" href="search.html"><em>Search Page</em></a></li>
+</ul>
+<span class="target" id="module-pyFitsidi"></span><div class="section" id="pyfitsidi-py">
+<h2>pyFitsidi.py<a class="headerlink" href="#pyfitsidi-py" title="Permalink to this headline">¶</a></h2>
+<p>Created by Danny Price on 2011-04-28.
+Copyright (c) 2011 The University of Oxford. All rights reserved.</p>
+<p>This file is a collection of modules for creating blank FITS IDI files.
+It consists mainly of pretty basic functions to create blank tables.</p>
+<p>The FITS handling is all done by pyFits, and blank arrays are created
+with numpy. So you&#8217;ll need to have both of these installed on your machine.</p>
+<div class="section" id="fits-idi-table-overview">
+<h3>FITS-IDI Table Overview<a class="headerlink" href="#fits-idi-table-overview" title="Permalink to this headline">¶</a></h3>
+<p>Here is a quick rundown of the tables that this script can make.
+Not all these tables are mandatory, so I&#8217;ve starred the ones which are the most
+important to understand and to get into your dataset.</p>
+<ul class="simple">
+<li><strong>ANTENNA</strong>           Antenna polarization information</li>
+<li><strong>ARRAY_GEOMETRY</strong>    Time system information and antenna coordinates</li>
+<li>FLAG                  Flagged data</li>
+<li><strong>FREQUENCY</strong>         Frequency setups</li>
+<li>GAIN_CURVE            Antenna gain curves</li>
+<li>INTERFEROMETER_MODEL  Correlator model</li>
+<li>PHASE-CAL             Phase cal measurements</li>
+<li><strong>SOURCE</strong>            Sources observed</li>
+<li>SYSTEM_TEMPERATURE    System and antenna temperatures</li>
+<li><strong>UV_DATA</strong>           Visibility data</li>
+</ul>
+<p>These tables are new from the FITS IDI update, and are all optional:</p>
+<ul class="simple">
+<li>BANDPASS              Bandpass functions</li>
+<li>BASELINE              Baseline-specific gain factors</li>
+<li>CALIBRATION           Gains as a function of time</li>
+<li>WEATHER               Meteorological data</li>
+</ul>
+</div>
+<div class="section" id="module-listing">
+<h3>Module listing<a class="headerlink" href="#module-listing" title="Permalink to this headline">¶</a></h3>
+<dl class="function">
+<dt id="pyFitsidi.generateCards">
+<tt class="descclassname">pyFitsidi.</tt><tt class="descname">generateCards</tt><big>(</big><em>filename</em><big>)</big><a class="headerlink" href="#pyFitsidi.generateCards" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parses a text file and generates a pyfits card list.
+Do NOT feed this a full FITS file, feed it only a human-readable 
+FITS header template.</p>
+<p>A text file is opened, acard is created from each line, then verified. 
+If the line does not pass verification, no card is appended.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="pyFitsidi.make_antenna">
+<tt class="descclassname">pyFitsidi.</tt><tt class="descname">make_antenna</tt><big>(</big><em>num_rows=1</em><big>)</big><a class="headerlink" href="#pyFitsidi.make_antenna" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a vanilla ANTENNA table HDU</p>
+<p class="rubric">Notes</p>
+<p>CASA didn&#8217;t like importing POLCALA and POLCALB, so they are currently commented out.</p>
+<p>Table is built with the following columns:</p>
+<ul class="simple">
+<li>TIME: Difference of antenna table time interval centre time and RDATE 0 hours</li>
+<li>TIME_INTERVAL: Antenna table time interval width</li>
+<li>ANNAME: Antenna name, should match value in ARRAY_GEOMETRY</li>
+<li>ANTENNA_NO: Antemma ID number for station</li>
+<li>ARRAY:    Array ID number</li>
+<li>FREQID:   Frequency setup ID number</li>
+<li>NO_LEVELS:Number of digitiser levels</li>
+<li>POLYTYA:  Feed A polarisation direction</li>
+<li>POLAA:    Feed A polarisation (degrees)</li>
+<li>POLCALA:  Feed A polarisation parameters</li>
+<li>POLYTYB:  As above, for feed B</li>
+<li>POLAB:    As above, for feed B</li>
+<li>POLCALB:  As above, for feed B</li>
+</ul>
+</dd></dl>
+
+<dl class="function">
+<dt id="pyFitsidi.make_array_geometry">
+<tt class="descclassname">pyFitsidi.</tt><tt class="descname">make_array_geometry</tt><big>(</big><em>num_rows=1</em><big>)</big><a class="headerlink" href="#pyFitsidi.make_array_geometry" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a vanilla ARRAY_GEOMETRY table HDU.</p>
+<p>One row is required for each antenna in the array (num_rows)</p>
+<p class="rubric">Notes</p>
+<p>Table is built with the following columns:</p>
+<ul class="simple">
+<li>ANNAME: Antenna name</li>
+<li>STABXYZ: Antenna relative position vector ECI components, in meters</li>
+<li>DERXYZ: Antenna velocity vector components, in meters/sec</li>
+<li>ORBPARM: Orbital parameters</li>
+<li>NOSTA: Antenna ID number for station</li>
+<li>MNTSTA: Antenna mount type (0 is alt-azimuth)</li>
+<li>STAXOF: Antenna axis offset, in meters</li>
+<li>DIAMETER: Antenna diameter (optional)</li>
+</ul>
+</dd></dl>
+
+<dl class="function">
+<dt id="pyFitsidi.make_bandpass">
+<tt class="descclassname">pyFitsidi.</tt><tt class="descname">make_bandpass</tt><big>(</big><em>num_rows=1</em><big>)</big><a class="headerlink" href="#pyFitsidi.make_bandpass" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a vanilla BANDPASS table HDU</p>
+<p class="rubric">Notes</p>
+<p>Table is built with the following columns:</p>
+<ul class="simple">
+<li>TIME: Difference of bandpass table time int center time and RDATE 0 hours</li>
+<li>TIME_INTERVAL: Bandpass table time interval width</li>
+<li>SOURCE_ID:  Source ID number</li>
+<li>ANTENNA_NO: Antenna ID number for station</li>
+<li>ARRAY:      Array ID number</li>
+<li>FREQID:     Frequency setup ID number (should match ANTENNA)</li>
+<li>BANDWIDTH:  Frequency band width described by bandpass</li>
+<li>BAND_FREQ:  Frequency band base offset</li>
+<li>REFANT_1:   Reference antenna ID number</li>
+<li>BREAL_1:    Bandpass response real componet</li>
+<li>BIMAG_1:    Bandpass response imaginary component</li>
+</ul>
+</dd></dl>
+
+<dl class="function">
+<dt id="pyFitsidi.make_flag">
+<tt class="descclassname">pyFitsidi.</tt><tt class="descname">make_flag</tt><big>(</big><em>num_rows=1</em><big>)</big><a class="headerlink" href="#pyFitsidi.make_flag" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a vanilla FLAG table HDU</p>
+<p class="rubric">Notes</p>
+<p>This table is optional.</p>
+<p>Table is built with the following columns:</p>
+<ul class="simple">
+<li>SOURCE_ID Source ID number</li>
+<li>ARRAY     Array number</li>
+<li>ANTS      Antenna numbers</li>
+<li>FREQID    Frequency setup number</li>
+<li>TIMERANG  Time range</li>
+<li>BANDS     Band flags</li>
+<li>CHANS     Channel range</li>
+<li>PFLAGS    Polarization flags</li>
+<li>REASON    Reason for flag</li>
+<li>SEVERITY  Severity code</li>
+</ul>
+</dd></dl>
+
+<dl class="function">
+<dt id="pyFitsidi.make_frequency">
+<tt class="descclassname">pyFitsidi.</tt><tt class="descname">make_frequency</tt><big>(</big><em>num_rows=1</em><big>)</big><a class="headerlink" href="#pyFitsidi.make_frequency" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a vanilla FREQUENCY table HDU</p>
+<p class="rubric">Notes</p>
+<p>Table is built with the following columns:</p>
+<ul class="simple">
+<li>FREQID:   Frequency setup ID number</li>
+<li>BANDFREQ: Frequency band base offset (Hz)</li>
+<li>CH_WIDTH: Frequency channel width (Hz)</li>
+<li>TOTAL_BANDWIDTH: Frequency bandwidth (Hz)</li>
+<li>SIDEBAND: Sideband flag (1 indicates upper sideband)</li>
+<li>BB_CHAN:  ?</li>
+</ul>
+</dd></dl>
+
+<dl class="function">
+<dt id="pyFitsidi.make_gain_curve">
+<tt class="descclassname">pyFitsidi.</tt><tt class="descname">make_gain_curve</tt><big>(</big><em>num_rows=1</em><big>)</big><a class="headerlink" href="#pyFitsidi.make_gain_curve" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a vanilla GAIN_CURVE table HDU</p>
+<p class="rubric">Notes</p>
+<p>This is an optional table (we will not include it). 
+Todo: Add switch to allow dual polarisation.</p>
+<p>Table is built with the following columns:</p>
+<ul class="simple">
+<li>ANTENNA_NO  Antenna number</li>
+<li>ARRAY       Array number</li>
+<li>FREQID      Frequency setup number</li>
+<li>TYPE_1      Gain curve types for polarization 1</li>
+<li>NTERM_1     Numbers of terms or entries for polarization 1</li>
+<li>X_TYP_1     x value types for polarization 1</li>
+<li>Y_TYP_1     y value types for polarization 1</li>
+<li>X_VAL_1     x values for polarization 1</li>
+<li>Y_VAL_1     y values for polarization 1</li>
+<li>GAIN_1      Relative gain values for polarization 1</li>
+<li>SENS_1      Sensitivities for polarization 1</li>
+</ul>
+</dd></dl>
+
+<dl class="function">
+<dt id="pyFitsidi.make_interferometer_model">
+<tt class="descclassname">pyFitsidi.</tt><tt class="descname">make_interferometer_model</tt><big>(</big><em>num_rows=1</em><big>)</big><a class="headerlink" href="#pyFitsidi.make_interferometer_model" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a vanilla INTERFEROMETER_MODEL table HDU.</p>
+<p class="rubric">Notes</p>
+<p>This table is optional, and is not included in Medicina FITS IDI</p>
+<p>Table is built with the following columns:</p>
+<ul class="simple">
+<li>TIME          Starting time of interval</li>
+<li>TIME_INTERVAL Duration of interval</li>
+<li>SOURCE_ID     Source ID number</li>
+<li>ANTENNA_NO    Antenna number</li>
+<li>ARRAY         Array number</li>
+<li>FREQID        Frequency setup number</li>
+<li>I.FAR.ROT     Ionospheric Faraday rotation</li>
+<li>FREQ_VAR      Time-variable frequency offsets</li>
+<li>PDELAY_1      Phase delay polynomials for polarization 1</li>
+<li>GDELAY_1      Group delay polynomials for polarization 1</li>
+<li>PRATE_1       Phase delay rate polynomials for polarization 1</li>
+<li>GRATE_1       Group rate polynomials for polarization 1</li>
+<li>DISP_1        Dispersive delay for polarization 1 at 1m wavelength</li>
+<li>DDISP_1       Rate of change of dispersive del for pol 1 at 1m</li>
+</ul>
+</dd></dl>
+
+<dl class="function">
+<dt id="pyFitsidi.make_phase_cal">
+<tt class="descclassname">pyFitsidi.</tt><tt class="descname">make_phase_cal</tt><big>(</big><em>num_rows=1</em><big>)</big><a class="headerlink" href="#pyFitsidi.make_phase_cal" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a vanilla PHASE-CAL table HDU</p>
+<p class="rubric">Notes</p>
+<p>This is an optional table (we will not include it)</p>
+<p>Table is built with the following columns:</p>
+<ul class="simple">
+<li>TIME          Central time of interval covered</li>
+<li>TIME_INTERVAL Duration of interval</li>
+<li>SOURCE_ID     Source ID number</li>
+<li>ANTENNA_NO    Antenna number</li>
+<li>ARRAY         Array number</li>
+<li>FREQID        Frequency setup number</li>
+<li>CABLE_CAL     Cable calibration measurement</li>
+<li>STATE_1       State counts for polarization 1</li>
+<li>PC_FREQ_1     Phase cal tone frequencies for polarization 1</li>
+<li>PC_REAL_1     real parts of phase-cal measurements for pol 1</li>
+<li>PC_IMAG_1     imaginary parts of phasecal measurements for pol 1</li>
+<li>PC_RATE_1     phase-cal rates for polarization 1</li>
+</ul>
+</dd></dl>
+
+<dl class="function">
+<dt id="pyFitsidi.make_primary">
+<tt class="descclassname">pyFitsidi.</tt><tt class="descname">make_primary</tt><big>(</big><big>)</big><a class="headerlink" href="#pyFitsidi.make_primary" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates the primary header data unit (HDU).</p>
+<p>This function generates header keywords from the file headers/primary.tpl</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="pyFitsidi.make_source">
+<tt class="descclassname">pyFitsidi.</tt><tt class="descname">make_source</tt><big>(</big><big>)</big><a class="headerlink" href="#pyFitsidi.make_source" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a vanilla SOURCE table HDU</p>
+<p class="rubric">Notes</p>
+<p>Table is built with the following columns:</p>
+<ul class="simple">
+<li>SOURCE_ID Source ID number</li>
+<li>SOURCE    Source name</li>
+<li>QUAL      Source qualifier number.</li>
+<li>CALCODE   Source calibrator code.</li>
+<li>FREQID    Source frequency ID</li>
+<li>IFLUX     Source I flux density</li>
+<li>QFLUX     Source Q flux density</li>
+<li>UFLUX     Source U flux density</li>
+<li>VFLUX     SourceV flux density</li>
+<li>ALPHA     Source spectral index</li>
+<li>FREQOFF   Source frequency offset</li>
+<li>RAEPO     Source J2000 equatorial position RA coordinate</li>
+<li>DECPO     Source J2000 equatorial position DEC coordinate</li>
+<li>EQUINOX   Mean Equinox</li>
+<li>RAAPP     Source apparent equatorial position RA coordinate</li>
+<li>DECAPP    Source apparent equatorial position DEC coordinate</li>
+<li>SYSVEL    Systematic velocity.</li>
+<li>VELTYP    Systematic velocity reference frame.</li>
+<li>VELDEF    Systematic velocity convention.</li>
+<li>RESTFREQ  Line rest frequency.</li>
+<li>PMRA      Source proper motion RA coordinate</li>
+<li>PMDEC     Source proper motion DEC coordinate</li>
+<li>PARALLAX  Source parallax.</li>
+</ul>
+</dd></dl>
+
+<dl class="function">
+<dt id="pyFitsidi.make_system_temperature">
+<tt class="descclassname">pyFitsidi.</tt><tt class="descname">make_system_temperature</tt><big>(</big><em>num_rows=1</em><big>)</big><a class="headerlink" href="#pyFitsidi.make_system_temperature" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a vanilla SYSTEM_TEMPERATURE table HDU</p>
+<p class="rubric">Notes</p>
+<p>This is an optional table.
+Todo: add dual pol support.</p>
+<p>Table is built with the following columns:</p>
+<ul class="simple">
+<li>TIME          Central time of interval covered</li>
+<li>TIME_INTERVAL Duration of interval</li>
+<li>SOURCE_ID     Source ID number</li>
+<li>ANTENNA_NO    Antenna number</li>
+<li>ARRAY         Array number</li>
+<li>FREQID        Frequency setup number</li>
+<li>TSYS_1        System temperatures for polarization 1</li>
+<li>TANT_1        Antenna temperatures for polarization 1</li>
+</ul>
+</dd></dl>
+
+<dl class="function">
+<dt id="pyFitsidi.make_uv_data">
+<tt class="descclassname">pyFitsidi.</tt><tt class="descname">make_uv_data</tt><big>(</big><em>num_rows=1</em><big>)</big><a class="headerlink" href="#pyFitsidi.make_uv_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a vanilla UV_DATA table HDU</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>num_rows</strong> :</p>
+<blockquote class="last">
+<div><p>Number of rows in your UV dataset. For example, if you have 528 baselines 
+(inc. autocorr), then for 10 time dumps, you&#8217;ll need 10*528 rows</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Notes</p>
+<p>Table is built with the following columns:</p>
+<ul class="simple">
+<li>UU           Baseline vector U coordinate (seconds)</li>
+<li>VV           Baseline vector V coordinate</li>
+<li>WW           Baseline vector W coordinate</li>
+<li>DATE         UTC Julian day value for time 00:00:00  on the day of the observation</li>
+<li>TIME         Fraction of Julian day from midnight to timestamp on day of observation.</li>
+<li>BASELINE     Antenna baseline pair ID.</li>
+<li>FILTER       VLBA filter ID</li>
+<li>SOURCE       Data source ID</li>
+<li>FREQID       Data frequency setup ID</li>
+<li>INTTIM       Data integration time</li>
+<li>WEIGHT       Data weights (one element for each freq channel)</li>
+<li>GATEID       VLBA gate ID</li>
+<li>FLUX         UV visibility data matrix</li>
+</ul>
+</dd></dl>
+
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="#">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Welcome to CASPER FITS IDI&#8217;s documentation!</a><ul>
+</ul>
+</li>
+<li><a class="reference internal" href="#indices-and-tables">Indices and tables</a><ul>
+<li><a class="reference internal" href="#pyfitsidi-py">pyFitsidi.py</a><ul>
+<li><a class="reference internal" href="#fits-idi-table-overview">FITS-IDI Table Overview</a></li>
+<li><a class="reference internal" href="#module-listing">Module listing</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/index.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" size="18" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="#">CASPER FITS IDI v0.1 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2011, Danny Price.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.7.
+    </div>
+  </body>
+</html>

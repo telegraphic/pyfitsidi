@@ -1,14 +1,5 @@
 EXTNAME = 'SYSTEM_TEMPERATURE' /
 EXTVER  =                    1 /
-OBSCODE = 'BL146   '           / Proposal code
-RDATE   = '2007-08-23'         / Reference date
-NO_STKD =                    4 / Nmbr stokes
-STK_1   =                   -1 / First stokes
-NO_BAND =                    4 / Number of basebands
-NO_CHAN =                    8 / Number of channels
-REF_FREQ=   8.40549000000000000E+09 / Frequency reference
-CHAN_BW =   1.00000000000000000E+06 / Channel bandwidth
-REF_PIXL=   5.31250000000000000E-01 /
-NO_POL  =                    2 /
+NO_POL  =                    1 /
 TABREV  =                    1 /
 END
