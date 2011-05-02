@@ -47,7 +47,7 @@ def config_source(tbl):
   Configures the source table with some default values
   """
   
-  sourcename = 'CygnusA'
+  sourcename = '3C251'
   print('Source is: %s'%sourcename)
   
   source = tbl.data[0]
@@ -57,8 +57,10 @@ def config_source(tbl):
   source['VELDEF']    = 'RADIO'
   source['VELTYP']    = 'GEOCENTR'
   source['FREQID']    = 1
-  source['RAEPO']     = 299.8667
-  source['DECEPO']    = 40.7339
+  #CygAsource['RAEPO']     = 299.8667
+  #CygAsource['DECEPO']    = 40.7339
+  source['RAEPO']     = 167.374
+  source['DECEPO']    = 38.612
   source['EQUINOX']   = 'J2000'
   
   # Things I'm just making up
@@ -81,7 +83,7 @@ def config_frequency(tbl):
   frequency = tbl.data[0]
 
   frequency['FREQID']         = 1
-  frequency['BANDFREQ']       = 0
+  frequency['BANDFREQ']       = 0         # This is offset from REF_FREQ, so zero!
   frequency['CH_WIDTH']       = 20.0/1024.0 * 10**6
   frequency['TOTAL_BANDWIDTH']= 20*10**6
   frequency['SIDEBAND']       = 1
@@ -187,8 +189,8 @@ def main():
   """
   
   # What are the filenames for our datasets?
-  hdffile  = '../hdf5/corr.2455676.70269.h5c.cyg'
-  fitsfile = 'corr.2455676.70269.fits'
+  hdffile  = '../hdf5/3C251/corr.2455676.34225.h5c.3c251'
+  fitsfile = '../fits/3C251/corr.2455676.34225.h5c.3c251.fits'
   
   # Make a new blank FITS HDU
   hdu = make_primary()

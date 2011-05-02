@@ -231,6 +231,36 @@ def config_uv_data(h5, tbl_uv_data, shortcut=False):
       flux='1'
   )
   
+  s3C196 = makeSource(
+      name="3C196",
+      ra='8:13:36.06',
+      dec='48:13:02.58',
+      flux='1'
+  )
+
+  s3C449 = makeSource(
+      name="3C449",
+      ra='22:31:22.08',
+      dec='39:12:25.2',
+      flux='1'
+  )
+
+  s3C254 = makeSource(
+      name="3C254",
+      ra='11:14:40.32',
+      dec='40:41:38.4',
+      flux='1'
+  )
+
+  s3C251 = makeSource(
+      name="3C254",
+      ra='11:9:29.76',
+      dec='38:38:43.2',
+      flux='1'
+  )
+  
+  source = s3C251
+  print "Source is: %s"%source.name
   
   # Extract the timestamps and use these to make cygnus our phase centre
   uvws = []
@@ -238,11 +268,11 @@ def config_uv_data(h5, tbl_uv_data, shortcut=False):
     t = datetime.datetime.fromtimestamp(timestamp)
     print t
     medicina.update(t)
-    CygA.compute(medicina)
+    source.compute(medicina)
   
     for baseline in baselines:
       vector = baseline[1]
-      H, d = (medicina.sidereal_time() - CygA.ra, CygA.dec)
+      H, d = (medicina.sidereal_time() - source.ra, source.dec)
       uvws.append(computeUVW(vector,H,d))
 
   # This array has shape t_len, num_ants, 3

@@ -1,7 +1,7 @@
 EXTNAME = 'UV_DATA '           /
 EXTVER  =                    1 /
 NMATRIX =                    1 /
-DATE-OBS= '2011-04-20'         /
+DATE-OBS= '2011-04-25'         /
 TELESCOP= 'BEST-2'           /
 OBSERVER= 'GFOSTER '           /
 TABREV  =                    2 / ARRAY changed to FILTER
