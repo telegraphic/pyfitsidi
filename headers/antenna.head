@@ -1,6 +1,0 @@
-EXTNAME = 'ANTENNA '           /
-EXTVER  =                    1 /
-TABREV  =                    1 /
-NOPCAL  =                    1 / num polarised calibration constants
-POLTYPE = 'X-Y LIN'           / ant polarisation type, circular approx
-END

@@ -7,7 +7,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Welcome to CASPER FITS IDI’s documentation! &mdash; CASPER FITS IDI v0.1 documentation</title>
+    <title>Welcome to pyFitsidi &mdash; pyFITS IDI v0.1 documentation</title>
     <link rel="stylesheet" href="_static/default.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <script type="text/javascript">
@@ -22,7 +22,7 @@
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
-    <link rel="top" title="CASPER FITS IDI v0.1 documentation" href="#" /> 
+    <link rel="top" title="pyFITS IDI v0.1 documentation" href="#" /> 
   </head>
   <body>
     <div class="related">
@@ -34,7 +34,7 @@
         <li class="right" >
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li><a href="#">CASPER FITS IDI v0.1 documentation</a> &raquo;</li> 
+        <li><a href="#">pyFITS IDI v0.1 documentation</a> &raquo;</li> 
       </ul>
     </div>  
 
@@ -43,31 +43,147 @@
         <div class="bodywrapper">
           <div class="body">
             
-  <div class="section" id="welcome-to-casper-fits-idi-s-documentation">
-<h1>Welcome to CASPER FITS IDI&#8217;s documentation!<a class="headerlink" href="#welcome-to-casper-fits-idi-s-documentation" title="Permalink to this headline">¶</a></h1>
-<p>Contents:</p>
-<div class="toctree-wrapper compound">
+  <div class="toctree-wrapper compound">
 <ul class="simple">
 </ul>
 </div>
-</div>
-<div class="section" id="indices-and-tables">
-<h1>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="welcome-to-pyfitsidi">
+<h1>Welcome to pyFitsidi<a class="headerlink" href="#welcome-to-pyfitsidi" title="Permalink to this headline">¶</a></h1>
 <ul class="simple">
 <li><a class="reference internal" href="genindex.html"><em>Index</em></a></li>
 <li><a class="reference internal" href="py-modindex.html"><em>Module Index</em></a></li>
 <li><a class="reference internal" href="search.html"><em>Search Page</em></a></li>
 </ul>
-<span class="target" id="module-pyFitsidi"></span><div class="section" id="pyfitsidi-py">
-<h2>pyFitsidi.py<a class="headerlink" href="#pyfitsidi-py" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="about-pyfitsidi">
+<h2>About pyFitsidi<a class="headerlink" href="#about-pyfitsidi" title="Permalink to this headline">¶</a></h2>
+<p>pyFitsidi is a python module that creates FITS IDI files.</p>
+<p>pyFitsidi is a collection of functions that create headers and data units that conform to the FITS-IDI convention. It was written primarily to convert data from a CASPER correlator into a format that can be imported into data reduction packages such as AIPS++ and CASA.</p>
+<div class="figure align-center">
+<img alt="The Northern Cross, Medicina" src="_images/medicina.jpg" />
+<p class="caption">The Northern Cross, Medicina, Italy. Photo by G. Foster.</p>
+</div>
+</div>
+<div class="section" id="the-fits-idi-convention">
+<h2>The FITS IDI convention<a class="headerlink" href="#the-fits-idi-convention" title="Permalink to this headline">¶</a></h2>
+<p>The FITS Interferometry Data Interchange Convention (“FITS-IDI”) is a set of conventions layered upon the standard FITS format to assist in the interchange of data recorded by interferometric telescopes, particularly at radio frequencies and very long baselines.</p>
+<p>FITS IDI is a registered convention in the NASA/IAU FITS working group registry, meaning it is defined and documented to &#8220;a minimum level of completeness and clarity&#8221;. FITS IDI files can be read by AIPS, AIPS++ and CASA (although I have only tested with CASA). They are used by the VLBA (Very Long Baseline Array) and JIVE (Joint Institute for VLBI in Europe), among others.</p>
+<p>There are a few alternative formats to FITS IDI, such as <a class="reference external" href="http://www.atnf.csiro.au/computing/software/miriad/">Miriad</a> FITS files, UVFITS files, and <a class="reference external" href="http://casa.nrao.edu/docs/userman/UserManse6.html">Measurement Sets</a> (MS). Miriad is getting a little long in the tooth, UVFITS is not very well documented, and Measurement Sets are a bit of a pain to create &#8211; plus, a MS isn&#8217;t a FITS file, so it can&#8217;t be read by FITS readers.</p>
+<p>Much more info on the FITS IDI convention can be found on its <a class="reference external" href="http://fits.gsfc.nasa.gov/registry/fitsidi.html">official page</a>. If you&#8217;re not familiar with FITS files, you might also want to look at the actual <a class="reference external" href="http://www.aanda.org/index.php?option=com_article&amp;access=doi&amp;doi=10.1051/0004-6361/201015362&amp;Itemid=129">FITS definition</a>. Finally, there are useful FITS resources at the <a class="reference external" href="http://fits.gsfc.nasa.gov/fits_home.html">NASA FITS website</a>.</p>
+</div>
+<div class="section" id="prerequisites">
+<h2>Prerequisites<a class="headerlink" href="#prerequisites" title="Permalink to this headline">¶</a></h2>
+<p>The actual reading/writing of FITS files is done by the <a class="reference external" href="http://www.stsci.edu/resources/software_hardware/pyfits">PyFITS</a> package. You&#8217;ll also need <a class="reference external" href="http://numpy.scipy.org/">numpy</a> for array handling and <a class="reference external" href="http://lxml.de/">lxml</a> for parsing config XML files.</p>
+<p>In the file createMedicinaFITS.py, we make use of <a class="reference external" href="http://rhodesmill.org/pyephem/">pyEphem</a> for astronomical calculations, and <a class="reference external" href="http://www.pytables.org/moin">pyTables</a> for HDF5 file I/O. Yo</p>
+</div>
+<div class="section" id="example-usage">
+<h2>Example Usage<a class="headerlink" href="#example-usage" title="Permalink to this headline">¶</a></h2>
+<p>A simple example of how to use pyFitsidi.py can be found in the createFitsIDI.py:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="gp">... </span><span class="sd">createFitsIDI.py</span>
+<span class="gp">... </span><span class="sd">=============</span>
+<span class="gp">...</span><span class="sd"></span>
+<span class="gp">... </span><span class="sd">Creates a basic FITS IDI file, with headers created from an XML configuration file.</span>
+<span class="gp">...</span><span class="sd"></span>
+<span class="gp">... </span><span class="sd">Created by Danny Price on 2011-04-20.</span>
+<span class="gp">... </span><span class="sd">Copyright (c) 2011 The University of Oxford. All rights reserved.</span>
+<span class="gp">...</span><span class="sd"></span>
+<span class="gp">... </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="gp">...</span>
+<span class="gp">... </span><span class="c"># Required modules</span>
+<span class="gp">... </span><span class="kn">import</span> <span class="nn">sys</span><span class="o">,</span> <span class="nn">os</span>
+<span class="gp">... </span><span class="kn">import</span> <span class="nn">pyfits</span> <span class="kn">as</span> <span class="nn">pf</span><span class="o">,</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<span class="gp">...</span>
+<span class="gp">... </span><span class="c"># import modules from this package</span>
+<span class="gp">... </span><span class="kn">from</span> <span class="nn">pyFitsidi</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="gp">...</span>
+<span class="gp">... </span><span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+<span class="gp">... </span>  <span class="sd">&quot;&quot;&quot;</span>
+<span class="gp">... </span><span class="sd">  Generate a blank FITS IDI file.</span>
+<span class="gp">... </span><span class="sd">  &quot;&quot;&quot;</span>
+<span class="gp">...</span>
+<span class="gp">... </span>  <span class="c"># What are the filenames for our datasets?</span>
+<span class="gp">... </span>  <span class="n">fitsfile</span> <span class="o">=</span> <span class="s">&#39;blank.fits&#39;</span>
+<span class="gp">... </span>  <span class="n">config</span>   <span class="o">=</span> <span class="s">&#39;config/config.xml&#39;</span>
+<span class="gp">...</span>
+<span class="gp">... </span>  <span class="c"># Make a new blank FITS HDU</span>
+<span class="gp">... </span>  <span class="k">print</span><span class="p">(</span><span class="s">&#39;Creating Primary HDU&#39;</span><span class="p">)</span>
+<span class="gp">... </span>  <span class="k">print</span><span class="p">(</span><span class="s">&#39;------------------------------------</span><span class="se">\n</span><span class="s">&#39;</span><span class="p">)</span>
+<span class="gp">... </span>  <span class="n">hdu</span> <span class="o">=</span> <span class="n">make_primary</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
+<span class="gp">... </span>  <span class="k">print</span> <span class="n">hdu</span><span class="o">.</span><span class="n">header</span><span class="o">.</span><span class="n">ascardlist</span><span class="p">()</span>
+<span class="gp">...</span>
+<span class="gp">... </span>  <span class="c"># Go through and generate required tables</span>
+<span class="gp">... </span>  <span class="k">print</span><span class="p">(</span><span class="s">&#39;</span><span class="se">\n</span><span class="s">Creating ARRAY_GEOMETRY&#39;</span><span class="p">)</span>
+<span class="gp">... </span>  <span class="k">print</span><span class="p">(</span><span class="s">&#39;------------------------------------&#39;</span><span class="p">)</span>
+<span class="gp">... </span>  <span class="n">tbl_array_geometry</span> <span class="o">=</span> <span class="n">make_array_geometry</span><span class="p">(</span><span class="n">config</span><span class="o">=</span><span class="n">config</span><span class="p">,</span> <span class="n">num_rows</span><span class="o">=</span><span class="mi">32</span><span class="p">)</span>
+<span class="gp">... </span>  <span class="k">print</span> <span class="n">tbl_array_geometry</span><span class="o">.</span><span class="n">header</span><span class="o">.</span><span class="n">ascardlist</span><span class="p">()</span>
+<span class="gp">...</span>
+<span class="gp">... </span>  <span class="k">print</span><span class="p">(</span><span class="s">&#39;</span><span class="se">\n</span><span class="s">Creating FREQUENCY&#39;</span><span class="p">)</span>
+<span class="gp">... </span>  <span class="k">print</span><span class="p">(</span><span class="s">&#39;------------------------------------&#39;</span><span class="p">)</span>
+<span class="gp">... </span>  <span class="n">tbl_frequency</span> <span class="o">=</span> <span class="n">make_frequency</span><span class="p">(</span><span class="n">config</span><span class="o">=</span><span class="n">config</span><span class="p">,</span> <span class="n">num_rows</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="gp">... </span>  <span class="k">print</span> <span class="n">tbl_frequency</span><span class="o">.</span><span class="n">header</span><span class="o">.</span><span class="n">ascardlist</span><span class="p">()</span>
+<span class="gp">...</span>
+<span class="gp">... </span>  <span class="k">print</span><span class="p">(</span><span class="s">&#39;</span><span class="se">\n</span><span class="s">Creating SOURCE&#39;</span><span class="p">)</span>
+<span class="gp">... </span>  <span class="k">print</span><span class="p">(</span><span class="s">&#39;------------------------------------&#39;</span><span class="p">)</span>
+<span class="gp">... </span>  <span class="n">tbl_source</span> <span class="o">=</span> <span class="n">make_source</span><span class="p">(</span><span class="n">config</span><span class="o">=</span><span class="n">config</span><span class="p">,</span> <span class="n">num_rows</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="gp">... </span>  <span class="k">print</span> <span class="n">tbl_source</span><span class="o">.</span><span class="n">header</span><span class="o">.</span><span class="n">ascardlist</span><span class="p">()</span>
+<span class="gp">...</span>
+<span class="gp">... </span>  <span class="k">print</span><span class="p">(</span><span class="s">&#39;</span><span class="se">\n</span><span class="s">Creating ANTENNA&#39;</span><span class="p">)</span>
+<span class="gp">... </span>  <span class="k">print</span><span class="p">(</span><span class="s">&#39;------------------------------------&#39;</span><span class="p">)</span>
+<span class="gp">... </span>  <span class="n">tbl_antenna</span> <span class="o">=</span> <span class="n">make_antenna</span><span class="p">(</span><span class="n">config</span><span class="o">=</span><span class="n">config</span><span class="p">,</span> <span class="n">num_rows</span><span class="o">=</span><span class="mi">32</span><span class="p">)</span>
+<span class="gp">... </span>  <span class="k">print</span> <span class="n">tbl_antenna</span><span class="o">.</span><span class="n">header</span><span class="o">.</span><span class="n">ascardlist</span><span class="p">()</span>
+<span class="gp">...</span>
+<span class="gp">... </span>  <span class="k">print</span><span class="p">(</span><span class="s">&#39;</span><span class="se">\n</span><span class="s">Creating UV_DATA&#39;</span><span class="p">)</span>
+<span class="gp">... </span>  <span class="k">print</span><span class="p">(</span><span class="s">&#39;------------------------------------&#39;</span><span class="p">)</span>
+<span class="gp">... </span>  <span class="c"># Number of rows req. depends on num. time dumps and num. of baselines</span>
+<span class="gp">... </span>  <span class="c"># Once you have data, it would be worth setting these dimensions automatically</span>
+<span class="gp">... </span>  <span class="c"># For now, we&#39;re hard-wiring in 1 time dump, 528 baselines (32 element array)</span>
+<span class="gp">... </span>  <span class="p">(</span><span class="n">t_len</span><span class="p">,</span> <span class="n">bl_len</span><span class="p">)</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">528</span><span class="p">)</span>
+<span class="gp">... </span>  <span class="n">tbl_uv_data</span> <span class="o">=</span> <span class="n">make_uv_data</span><span class="p">(</span><span class="n">config</span><span class="o">=</span><span class="n">config</span><span class="p">,</span> <span class="n">num_rows</span><span class="o">=</span><span class="n">t_len</span><span class="o">*</span><span class="n">bl_len</span><span class="p">)</span>
+<span class="gp">... </span>  <span class="k">print</span> <span class="n">tbl_antenna</span><span class="o">.</span><span class="n">header</span><span class="o">.</span><span class="n">ascardlist</span><span class="p">()</span>
+<span class="gp">...</span>
+<span class="gp">... </span>  <span class="k">print</span><span class="p">(</span><span class="s">&#39;</span><span class="se">\n</span><span class="s">Creating HDU list&#39;</span><span class="p">)</span>
+<span class="gp">... </span>  <span class="k">print</span><span class="p">(</span><span class="s">&#39;------------------------------------&#39;</span><span class="p">)</span>
+<span class="gp">... </span>  <span class="n">hdulist</span> <span class="o">=</span> <span class="n">pf</span><span class="o">.</span><span class="n">HDUList</span><span class="p">(</span>
+<span class="gp">... </span>              <span class="p">[</span><span class="n">hdu</span><span class="p">,</span>
+<span class="gp">... </span>              <span class="n">tbl_array_geometry</span><span class="p">,</span>
+<span class="gp">... </span>              <span class="n">tbl_frequency</span><span class="p">,</span>
+<span class="gp">... </span>              <span class="n">tbl_antenna</span><span class="p">,</span>
+<span class="gp">... </span>              <span class="n">tbl_source</span><span class="p">,</span>
+<span class="gp">... </span>              <span class="n">tbl_uv_data</span>
+<span class="gp">... </span>              <span class="p">])</span>
+<span class="gp">...</span>
+<span class="gp">... </span>  <span class="k">print</span><span class="p">(</span><span class="s">&#39;</span><span class="se">\n</span><span class="s">Verifying integrity...&#39;</span><span class="p">)</span>
+<span class="gp">... </span>  <span class="n">hdulist</span><span class="o">.</span><span class="n">verify</span><span class="p">()</span>
+<span class="gp">...</span>
+<span class="gp">... </span>  <span class="k">if</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">fitsfile</span><span class="p">)):</span>
+<span class="gp">... </span>    <span class="k">print</span><span class="p">(</span><span class="s">&#39;Removing existing file </span><span class="si">%s</span><span class="s">...&#39;</span><span class="p">)</span><span class="o">%</span><span class="n">fitsfile</span>
+<span class="gp">... </span>    <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">fitsfile</span><span class="p">)</span>
+<span class="gp">... </span>  <span class="k">print</span><span class="p">(</span><span class="s">&#39;Writing to file </span><span class="si">%s</span><span class="s">...&#39;</span><span class="p">)</span><span class="o">%</span><span class="n">fitsfile</span>
+<span class="gp">... </span>  <span class="n">hdulist</span><span class="o">.</span><span class="n">writeto</span><span class="p">(</span><span class="n">fitsfile</span><span class="p">)</span>
+<span class="gp">...</span>
+<span class="gp">... </span>  <span class="k">print</span><span class="p">(</span><span class="s">&#39;Done.&#39;</span><span class="p">)</span>
+<span class="gp">...</span>
+<span class="gp">...</span>
+<span class="gp">... </span><span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">&#39;__main__&#39;</span><span class="p">:</span>
+<span class="gp">... </span>  <span class="n">main</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>A more complicated example is shown in createMedicinaFITS.py. In this file, a complete FITS IDI file is generated from an XML config file and a HDF5 data file. While the XML and HDF5 data are specific to the Medicina BEST-2 telescope, this file could be adapted as required.</p>
+<p>In createMedicinaFITS.py, only the mandatory binary tables are created: array_geometry, antenna, frequency, source and uv_data.</p>
+</div>
+<div class="section" id="module-pyFitsidi">
+<span id="module-documentation"></span><h2>Module Documentation<a class="headerlink" href="#module-pyFitsidi" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="pyfitsidi-py">
+<h3>pyFitsidi.py<a class="headerlink" href="#pyfitsidi-py" title="Permalink to this headline">¶</a></h3>
 <p>Created by Danny Price on 2011-04-28.
 Copyright (c) 2011 The University of Oxford. All rights reserved.</p>
 <p>This file is a collection of modules for creating blank FITS IDI files.
 It consists mainly of pretty basic functions to create blank tables.</p>
 <p>The FITS handling is all done by pyFits, and blank arrays are created
-with numpy. So you&#8217;ll need to have both of these installed on your machine.</p>
+with numpy. So you&#8217;ll need to have both of these installed on your machine.
+In addition, the config xml file is read with lxml, so install that too.</p>
 <div class="section" id="fits-idi-table-overview">
-<h3>FITS-IDI Table Overview<a class="headerlink" href="#fits-idi-table-overview" title="Permalink to this headline">¶</a></h3>
+<h4>FITS-IDI Table Overview<a class="headerlink" href="#fits-idi-table-overview" title="Permalink to this headline">¶</a></h4>
 <p>Here is a quick rundown of the tables that this script can make.
 Not all these tables are mandatory, so I&#8217;ve starred the ones which are the most
 important to understand and to get into your dataset.</p>
@@ -92,21 +208,27 @@ important to understand and to get into your dataset.</p>
 </ul>
 </div>
 <div class="section" id="module-listing">
-<h3>Module listing<a class="headerlink" href="#module-listing" title="Permalink to this headline">¶</a></h3>
-<dl class="function">
-<dt id="pyFitsidi.generateCards">
-<tt class="descclassname">pyFitsidi.</tt><tt class="descname">generateCards</tt><big>(</big><em>filename</em><big>)</big><a class="headerlink" href="#pyFitsidi.generateCards" title="Permalink to this definition">¶</a></dt>
-<dd><p>Parses a text file and generates a pyfits card list.
-Do NOT feed this a full FITS file, feed it only a human-readable 
-FITS header template.</p>
-<p>A text file is opened, acard is created from each line, then verified. 
-If the line does not pass verification, no card is appended.</p>
-</dd></dl>
-
+<h4>Module listing<a class="headerlink" href="#module-listing" title="Permalink to this headline">¶</a></h4>
 <dl class="function">
 <dt id="pyFitsidi.make_antenna">
-<tt class="descclassname">pyFitsidi.</tt><tt class="descname">make_antenna</tt><big>(</big><em>num_rows=1</em><big>)</big><a class="headerlink" href="#pyFitsidi.make_antenna" title="Permalink to this definition">¶</a></dt>
+<tt class="descclassname">pyFitsidi.</tt><tt class="descname">make_antenna</tt><big>(</big><em>config='config.xml'</em>, <em>num_rows=1</em><big>)</big><a class="headerlink" href="#pyFitsidi.make_antenna" title="Permalink to this definition">¶</a></dt>
 <dd><p>Creates a vanilla ANTENNA table HDU</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>config: string</strong> :</p>
+<blockquote>
+<div><p>filename of xml configuration file, defaults to &#8216;config,xml&#8217;</p>
+</div></blockquote>
+<p><strong>num_rows: int</strong> :</p>
+<blockquote class="last">
+<div><p>number of rows to generate. Rows will be filled with numpy zeros.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
 <p class="rubric">Notes</p>
 <p>CASA didn&#8217;t like importing POLCALA and POLCALB, so they are currently commented out.</p>
 <p>Table is built with the following columns:</p>
@@ -129,9 +251,25 @@ If the line does not pass verification, no card is appended.</p>
 
 <dl class="function">
 <dt id="pyFitsidi.make_array_geometry">
-<tt class="descclassname">pyFitsidi.</tt><tt class="descname">make_array_geometry</tt><big>(</big><em>num_rows=1</em><big>)</big><a class="headerlink" href="#pyFitsidi.make_array_geometry" title="Permalink to this definition">¶</a></dt>
+<tt class="descclassname">pyFitsidi.</tt><tt class="descname">make_array_geometry</tt><big>(</big><em>config='config.xml'</em>, <em>num_rows=1</em><big>)</big><a class="headerlink" href="#pyFitsidi.make_array_geometry" title="Permalink to this definition">¶</a></dt>
 <dd><p>Creates a vanilla ARRAY_GEOMETRY table HDU.</p>
 <p>One row is required for each antenna in the array (num_rows)</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>config: string</strong> :</p>
+<blockquote>
+<div><p>filename of xml configuration file, defaults to &#8216;config,xml&#8217;</p>
+</div></blockquote>
+<p><strong>num_rows: int</strong> :</p>
+<blockquote class="last">
+<div><p>number of rows to generate. Rows will be filled with numpy zeros.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
 <p class="rubric">Notes</p>
 <p>Table is built with the following columns:</p>
 <ul class="simple">
@@ -148,8 +286,24 @@ If the line does not pass verification, no card is appended.</p>
 
 <dl class="function">
 <dt id="pyFitsidi.make_bandpass">
-<tt class="descclassname">pyFitsidi.</tt><tt class="descname">make_bandpass</tt><big>(</big><em>num_rows=1</em><big>)</big><a class="headerlink" href="#pyFitsidi.make_bandpass" title="Permalink to this definition">¶</a></dt>
+<tt class="descclassname">pyFitsidi.</tt><tt class="descname">make_bandpass</tt><big>(</big><em>config='config.xml'</em>, <em>num_rows=1</em><big>)</big><a class="headerlink" href="#pyFitsidi.make_bandpass" title="Permalink to this definition">¶</a></dt>
 <dd><p>Creates a vanilla BANDPASS table HDU</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>config: string</strong> :</p>
+<blockquote>
+<div><p>filename of xml configuration file, defaults to &#8216;config,xml&#8217;</p>
+</div></blockquote>
+<p><strong>num_rows: int</strong> :</p>
+<blockquote class="last">
+<div><p>number of rows to generate. Rows will be filled with numpy zeros.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
 <p class="rubric">Notes</p>
 <p>Table is built with the following columns:</p>
 <ul class="simple">
@@ -169,8 +323,24 @@ If the line does not pass verification, no card is appended.</p>
 
 <dl class="function">
 <dt id="pyFitsidi.make_flag">
-<tt class="descclassname">pyFitsidi.</tt><tt class="descname">make_flag</tt><big>(</big><em>num_rows=1</em><big>)</big><a class="headerlink" href="#pyFitsidi.make_flag" title="Permalink to this definition">¶</a></dt>
+<tt class="descclassname">pyFitsidi.</tt><tt class="descname">make_flag</tt><big>(</big><em>config='config.xml'</em>, <em>num_rows=1</em><big>)</big><a class="headerlink" href="#pyFitsidi.make_flag" title="Permalink to this definition">¶</a></dt>
 <dd><p>Creates a vanilla FLAG table HDU</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>config: string</strong> :</p>
+<blockquote>
+<div><p>filename of xml configuration file, defaults to &#8216;config,xml&#8217;</p>
+</div></blockquote>
+<p><strong>num_rows: int</strong> :</p>
+<blockquote class="last">
+<div><p>number of rows to generate. Rows will be filled with numpy zeros.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
 <p class="rubric">Notes</p>
 <p>This table is optional.</p>
 <p>Table is built with the following columns:</p>
@@ -190,8 +360,24 @@ If the line does not pass verification, no card is appended.</p>
 
 <dl class="function">
 <dt id="pyFitsidi.make_frequency">
-<tt class="descclassname">pyFitsidi.</tt><tt class="descname">make_frequency</tt><big>(</big><em>num_rows=1</em><big>)</big><a class="headerlink" href="#pyFitsidi.make_frequency" title="Permalink to this definition">¶</a></dt>
+<tt class="descclassname">pyFitsidi.</tt><tt class="descname">make_frequency</tt><big>(</big><em>config='config.xml'</em>, <em>num_rows=1</em><big>)</big><a class="headerlink" href="#pyFitsidi.make_frequency" title="Permalink to this definition">¶</a></dt>
 <dd><p>Creates a vanilla FREQUENCY table HDU</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>config: string</strong> :</p>
+<blockquote>
+<div><p>filename of xml configuration file, defaults to &#8216;config,xml&#8217;</p>
+</div></blockquote>
+<p><strong>num_rows: int</strong> :</p>
+<blockquote class="last">
+<div><p>number of rows to generate. Rows will be filled with numpy zeros.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
 <p class="rubric">Notes</p>
 <p>Table is built with the following columns:</p>
 <ul class="simple">
@@ -206,8 +392,24 @@ If the line does not pass verification, no card is appended.</p>
 
 <dl class="function">
 <dt id="pyFitsidi.make_gain_curve">
-<tt class="descclassname">pyFitsidi.</tt><tt class="descname">make_gain_curve</tt><big>(</big><em>num_rows=1</em><big>)</big><a class="headerlink" href="#pyFitsidi.make_gain_curve" title="Permalink to this definition">¶</a></dt>
+<tt class="descclassname">pyFitsidi.</tt><tt class="descname">make_gain_curve</tt><big>(</big><em>config='config.xml'</em>, <em>num_rows=1</em><big>)</big><a class="headerlink" href="#pyFitsidi.make_gain_curve" title="Permalink to this definition">¶</a></dt>
 <dd><p>Creates a vanilla GAIN_CURVE table HDU</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>config: string</strong> :</p>
+<blockquote>
+<div><p>filename of xml configuration file, defaults to &#8216;config,xml&#8217;</p>
+</div></blockquote>
+<p><strong>num_rows: int</strong> :</p>
+<blockquote class="last">
+<div><p>number of rows to generate. Rows will be filled with numpy zeros.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
 <p class="rubric">Notes</p>
 <p>This is an optional table (we will not include it). 
 Todo: Add switch to allow dual polarisation.</p>
@@ -229,8 +431,24 @@ Todo: Add switch to allow dual polarisation.</p>
 
 <dl class="function">
 <dt id="pyFitsidi.make_interferometer_model">
-<tt class="descclassname">pyFitsidi.</tt><tt class="descname">make_interferometer_model</tt><big>(</big><em>num_rows=1</em><big>)</big><a class="headerlink" href="#pyFitsidi.make_interferometer_model" title="Permalink to this definition">¶</a></dt>
+<tt class="descclassname">pyFitsidi.</tt><tt class="descname">make_interferometer_model</tt><big>(</big><em>config='config.xml'</em>, <em>num_rows=1</em><big>)</big><a class="headerlink" href="#pyFitsidi.make_interferometer_model" title="Permalink to this definition">¶</a></dt>
 <dd><p>Creates a vanilla INTERFEROMETER_MODEL table HDU.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>config: string</strong> :</p>
+<blockquote>
+<div><p>filename of xml configuration file, defaults to &#8216;config,xml&#8217;</p>
+</div></blockquote>
+<p><strong>num_rows: int</strong> :</p>
+<blockquote class="last">
+<div><p>number of rows to generate. Rows will be filled with numpy zeros.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
 <p class="rubric">Notes</p>
 <p>This table is optional, and is not included in Medicina FITS IDI</p>
 <p>Table is built with the following columns:</p>
@@ -254,8 +472,24 @@ Todo: Add switch to allow dual polarisation.</p>
 
 <dl class="function">
 <dt id="pyFitsidi.make_phase_cal">
-<tt class="descclassname">pyFitsidi.</tt><tt class="descname">make_phase_cal</tt><big>(</big><em>num_rows=1</em><big>)</big><a class="headerlink" href="#pyFitsidi.make_phase_cal" title="Permalink to this definition">¶</a></dt>
+<tt class="descclassname">pyFitsidi.</tt><tt class="descname">make_phase_cal</tt><big>(</big><em>config='config.xml'</em>, <em>num_rows=1</em><big>)</big><a class="headerlink" href="#pyFitsidi.make_phase_cal" title="Permalink to this definition">¶</a></dt>
 <dd><p>Creates a vanilla PHASE-CAL table HDU</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>config: string</strong> :</p>
+<blockquote>
+<div><p>filename of xml configuration file, defaults to &#8216;config,xml&#8217;</p>
+</div></blockquote>
+<p><strong>num_rows: int</strong> :</p>
+<blockquote class="last">
+<div><p>number of rows to generate. Rows will be filled with numpy zeros.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
 <p class="rubric">Notes</p>
 <p>This is an optional table (we will not include it)</p>
 <p>Table is built with the following columns:</p>
@@ -277,15 +511,43 @@ Todo: Add switch to allow dual polarisation.</p>
 
 <dl class="function">
 <dt id="pyFitsidi.make_primary">
-<tt class="descclassname">pyFitsidi.</tt><tt class="descname">make_primary</tt><big>(</big><big>)</big><a class="headerlink" href="#pyFitsidi.make_primary" title="Permalink to this definition">¶</a></dt>
+<tt class="descclassname">pyFitsidi.</tt><tt class="descname">make_primary</tt><big>(</big><em>config='config.xml'</em><big>)</big><a class="headerlink" href="#pyFitsidi.make_primary" title="Permalink to this definition">¶</a></dt>
 <dd><p>Creates the primary header data unit (HDU).</p>
 <p>This function generates header keywords from the file headers/primary.tpl</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>config: string</strong> :</p>
+<blockquote class="last">
+<div><p>filename of xml configuration file, defaults to &#8216;config,xml&#8217;</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="function">
 <dt id="pyFitsidi.make_source">
-<tt class="descclassname">pyFitsidi.</tt><tt class="descname">make_source</tt><big>(</big><big>)</big><a class="headerlink" href="#pyFitsidi.make_source" title="Permalink to this definition">¶</a></dt>
+<tt class="descclassname">pyFitsidi.</tt><tt class="descname">make_source</tt><big>(</big><em>config='config.xml'</em>, <em>num_rows=1</em><big>)</big><a class="headerlink" href="#pyFitsidi.make_source" title="Permalink to this definition">¶</a></dt>
 <dd><p>Creates a vanilla SOURCE table HDU</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>config: string</strong> :</p>
+<blockquote>
+<div><p>filename of xml configuration file, defaults to &#8216;config,xml&#8217;</p>
+</div></blockquote>
+<p><strong>num_rows: int</strong> :</p>
+<blockquote class="last">
+<div><p>number of rows to generate. Rows will be filled with numpy zeros.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
 <p class="rubric">Notes</p>
 <p>Table is built with the following columns:</p>
 <ul class="simple">
@@ -317,8 +579,24 @@ Todo: Add switch to allow dual polarisation.</p>
 
 <dl class="function">
 <dt id="pyFitsidi.make_system_temperature">
-<tt class="descclassname">pyFitsidi.</tt><tt class="descname">make_system_temperature</tt><big>(</big><em>num_rows=1</em><big>)</big><a class="headerlink" href="#pyFitsidi.make_system_temperature" title="Permalink to this definition">¶</a></dt>
+<tt class="descclassname">pyFitsidi.</tt><tt class="descname">make_system_temperature</tt><big>(</big><em>config='config.xml'</em>, <em>num_rows=1</em><big>)</big><a class="headerlink" href="#pyFitsidi.make_system_temperature" title="Permalink to this definition">¶</a></dt>
 <dd><p>Creates a vanilla SYSTEM_TEMPERATURE table HDU</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>config: string</strong> :</p>
+<blockquote>
+<div><p>filename of xml configuration file, defaults to &#8216;config,xml&#8217;</p>
+</div></blockquote>
+<p><strong>num_rows: int</strong> :</p>
+<blockquote class="last">
+<div><p>number of rows to generate. Rows will be filled with numpy zeros.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
 <p class="rubric">Notes</p>
 <p>This is an optional table.
 Todo: add dual pol support.</p>
@@ -337,16 +615,19 @@ Todo: add dual pol support.</p>
 
 <dl class="function">
 <dt id="pyFitsidi.make_uv_data">
-<tt class="descclassname">pyFitsidi.</tt><tt class="descname">make_uv_data</tt><big>(</big><em>num_rows=1</em><big>)</big><a class="headerlink" href="#pyFitsidi.make_uv_data" title="Permalink to this definition">¶</a></dt>
+<tt class="descclassname">pyFitsidi.</tt><tt class="descname">make_uv_data</tt><big>(</big><em>config='config.xml'</em>, <em>num_rows=1</em><big>)</big><a class="headerlink" href="#pyFitsidi.make_uv_data" title="Permalink to this definition">¶</a></dt>
 <dd><p>Creates a vanilla UV_DATA table HDU</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>num_rows</strong> :</p>
+<tr class="field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>config: string</strong> :</p>
+<blockquote>
+<div><p>filename of xml configuration file, defaults to &#8216;config,xml&#8217;</p>
+</div></blockquote>
+<p><strong>num_rows: int</strong> :</p>
 <blockquote class="last">
-<div><p>Number of rows in your UV dataset. For example, if you have 528 baselines 
-(inc. autocorr), then for 10 time dumps, you&#8217;ll need 10*528 rows</p>
+<div><p>number of rows to generate. Rows will be filled with numpy zeros.</p>
 </div></blockquote>
 </td>
 </tr>
@@ -371,6 +652,250 @@ Todo: add dual pol support.</p>
 </ul>
 </dd></dl>
 
+<dl class="function">
+<dt id="pyFitsidi.parseConfig">
+<tt class="descclassname">pyFitsidi.</tt><tt class="descname">parseConfig</tt><big>(</big><em>tagname</em>, <em>config='config.xml'</em><big>)</big><a class="headerlink" href="#pyFitsidi.parseConfig" title="Permalink to this definition">¶</a></dt>
+<dd><p>Finds tagname, in elementTree x, parses and returns dictionary of values
+This is a helper function, and is not usually called directly</p>
+</dd></dl>
+
+</div>
+</div>
+<span class="target" id="module-astroCoords"></span><div class="section" id="astrocoords-py">
+<h3>astroCoords.py<a class="headerlink" href="#astrocoords-py" title="Permalink to this headline">¶</a></h3>
+<p>Some useful functions for converting in between Right Ascension (hours,mins,secs)
+and Declination (degrees,mins,secs) to degrees and radians. These functions are
+all named in the same format: a2b(), where a is the original data, and b is the new
+data format.</p>
+<p>All of this type of basic stuff can be done with pyEphem or similar, but I wanted
+something super simple.</p>
+<p>Created by Danny Price on 2011-05-01.
+Copyright (c) 2011 The University of Oxford. All rights reserved.</p>
+<div class="section" id="id1">
+<h4>Module listing<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h4>
+<dl class="function">
+<dt id="astroCoords.decdms2deg">
+<tt class="descclassname">astroCoords.</tt><tt class="descname">decdms2deg</tt><big>(</big><em>deg</em>, <em>min</em>, <em>sec</em><big>)</big><a class="headerlink" href="#astroCoords.decdms2deg" title="Permalink to this definition">¶</a></dt>
+<dd><p>Converts degrees, minutes seconds into degrees
+i.e. a floating point number in range (0,360)</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>deg: int</strong> :</p>
+<blockquote>
+<div><p>degrees to be converted (from 0 to 360)</p>
+</div></blockquote>
+<p><strong>min: int</strong> :</p>
+<blockquote>
+<div><p>minutes to be converted (from 0 to 60)</p>
+</div></blockquote>
+<p><strong>sec: float</strong> :</p>
+<blockquote class="last">
+<div><p>seconds to be converted (from 0.0 to 60.0)</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="astroCoords.decdms2rad">
+<tt class="descclassname">astroCoords.</tt><tt class="descname">decdms2rad</tt><big>(</big><em>deg</em>, <em>min</em>, <em>sec</em><big>)</big><a class="headerlink" href="#astroCoords.decdms2rad" title="Permalink to this definition">¶</a></dt>
+<dd><p>Converts degrees, minutes seconds into radians 
+i.e. a floating point number in range (0,2pi)</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>deg: int</strong> :</p>
+<blockquote>
+<div><p>degrees to be converted (from 0 to 360)</p>
+</div></blockquote>
+<p><strong>min: int</strong> :</p>
+<blockquote>
+<div><p>minutes to be converted (from 0 to 60)</p>
+</div></blockquote>
+<p><strong>sec: float</strong> :</p>
+<blockquote class="last">
+<div><p>seconds to be converted (from 0.0 to 60.0)</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="astroCoords.deg2decdms">
+<tt class="descclassname">astroCoords.</tt><tt class="descname">deg2decdms</tt><big>(</big><em>degrees</em><big>)</big><a class="headerlink" href="#astroCoords.deg2decdms" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert number in degrees to declination degs, arcmins, arcsecs
+Returns in list (hours,mins,secs)</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>degrees: float</strong> :</p>
+<blockquote class="last">
+<div><p>degrees to be converted (from 0 to 360)</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="astroCoords.deg2rad">
+<tt class="descclassname">astroCoords.</tt><tt class="descname">deg2rad</tt><big>(</big><em>degrees</em><big>)</big><a class="headerlink" href="#astroCoords.deg2rad" title="Permalink to this definition">¶</a></dt>
+<dd><p>Converts from degrees to radians.
+This is just a numpy call...</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>degrees: float</strong> :</p>
+<blockquote class="last">
+<div><p>degrees to be converted (from 0 to 360)</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="astroCoords.deg2rahms">
+<tt class="descclassname">astroCoords.</tt><tt class="descname">deg2rahms</tt><big>(</big><em>degrees</em><big>)</big><a class="headerlink" href="#astroCoords.deg2rahms" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert number in degrees to right ascension HH,MM,SS.SS
+Returns in list (hours,mins,secs)</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>degrees: float</strong> :</p>
+<blockquote class="last">
+<div><p>degrees to be converted (from 0 to 360)</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="astroCoords.rad2decdms">
+<tt class="descclassname">astroCoords.</tt><tt class="descname">rad2decdms</tt><big>(</big><em>radians</em><big>)</big><a class="headerlink" href="#astroCoords.rad2decdms" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert number in radians to declination degs, arcmins, arcsecs
+Returns in list (hours,mins,secs)</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>radians: float</strong> :</p>
+<blockquote class="last">
+<div><p>radians to be converted (from 0 to 2 pi)</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="astroCoords.rad2deg">
+<tt class="descclassname">astroCoords.</tt><tt class="descname">rad2deg</tt><big>(</big><em>radians</em><big>)</big><a class="headerlink" href="#astroCoords.rad2deg" title="Permalink to this definition">¶</a></dt>
+<dd><p>Converts from radians to degrees.
+This is just a numpy call...</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>radians: float</strong> :</p>
+<blockquote class="last">
+<div><p>radians to be converted (from 0 to 2 pi)</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="astroCoords.rad2rahms">
+<tt class="descclassname">astroCoords.</tt><tt class="descname">rad2rahms</tt><big>(</big><em>radians</em><big>)</big><a class="headerlink" href="#astroCoords.rad2rahms" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert number in radians to right ascension H,M,SS.SS
+Returns tuple (hours,mins,secs)</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>radians: float</strong> :</p>
+<blockquote class="last">
+<div><p>radians to be converted (from 0 to 2 pi)</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="astroCoords.rahms2deg">
+<tt class="descclassname">astroCoords.</tt><tt class="descname">rahms2deg</tt><big>(</big><em>h</em>, <em>m</em>, <em>s</em><big>)</big><a class="headerlink" href="#astroCoords.rahms2deg" title="Permalink to this definition">¶</a></dt>
+<dd><p>Converts list (hours,minutes,seconds) to degrees
+Value returned in range (0,360)</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>h: int</strong> :</p>
+<blockquote>
+<div><p>hour angle to be converted (from 0 to 24)</p>
+</div></blockquote>
+<p><strong>h: int</strong> :</p>
+<blockquote>
+<div><p>minutes to be converted (from 0 to 60)</p>
+</div></blockquote>
+<p><strong>s: float</strong> :</p>
+<blockquote class="last">
+<div><p>seconds to be converted (from 0.0 to 60.0)</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="astroCoords.rahms2rad">
+<tt class="descclassname">astroCoords.</tt><tt class="descname">rahms2rad</tt><big>(</big><em>h</em>, <em>m</em>, <em>s</em><big>)</big><a class="headerlink" href="#astroCoords.rahms2rad" title="Permalink to this definition">¶</a></dt>
+<dd><p>Converts list (hours,minutes,seconds) to radians
+Value returned in range (0,2pi)</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>h: int</strong> :</p>
+<blockquote>
+<div><p>hour angle to be converted (from 0 to 24)</p>
+</div></blockquote>
+<p><strong>h: int</strong> :</p>
+<blockquote>
+<div><p>minutes to be converted (from 0 to 60)</p>
+</div></blockquote>
+<p><strong>s: float</strong> :</p>
+<blockquote class="last">
+<div><p>seconds to be converted (from 0.0 to 60.0)</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
 </div>
 </div>
 </div>
@@ -383,13 +908,21 @@ Todo: add dual pol support.</p>
         <div class="sphinxsidebarwrapper">
   <h3><a href="#">Table Of Contents</a></h3>
   <ul>
-<li><a class="reference internal" href="#">Welcome to CASPER FITS IDI&#8217;s documentation!</a><ul>
-</ul>
-</li>
-<li><a class="reference internal" href="#indices-and-tables">Indices and tables</a><ul>
+<li><a class="reference internal" href="#">Welcome to pyFitsidi</a><ul>
+<li><a class="reference internal" href="#about-pyfitsidi">About pyFitsidi</a></li>
+<li><a class="reference internal" href="#the-fits-idi-convention">The FITS IDI convention</a></li>
+<li><a class="reference internal" href="#prerequisites">Prerequisites</a></li>
+<li><a class="reference internal" href="#example-usage">Example Usage</a></li>
+<li><a class="reference internal" href="#module-pyFitsidi">Module Documentation</a><ul>
 <li><a class="reference internal" href="#pyfitsidi-py">pyFitsidi.py</a><ul>
 <li><a class="reference internal" href="#fits-idi-table-overview">FITS-IDI Table Overview</a></li>
 <li><a class="reference internal" href="#module-listing">Module listing</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#astrocoords-py">astroCoords.py</a><ul>
+<li><a class="reference internal" href="#id1">Module listing</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -427,7 +960,7 @@ Todo: add dual pol support.</p>
         <li class="right" >
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li><a href="#">CASPER FITS IDI v0.1 documentation</a> &raquo;</li> 
+        <li><a href="#">pyFITS IDI v0.1 documentation</a> &raquo;</li> 
       </ul>
     </div>
     <div class="footer">

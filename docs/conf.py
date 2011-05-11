@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# CASPER FITS IDI documentation build configuration file, created by
+# py FITS IDI documentation build configuration file, created by
 # sphinx-quickstart on Thu Apr 28 19:55:01 2011.
 #
 # This file is execfile()d with the current directory set to its containing dir.
@@ -40,7 +40,7 @@ source_suffix = '.rst'
 master_doc = 'index'
 
 # General information about the project.
-project = u'CASPER FITS IDI'
+project = u'pyFITS IDI'
 copyright = u'2011, Danny Price'
 
 # The version info for the project you're documenting, acts as replacement for
@@ -164,7 +164,7 @@ html_static_path = ['_static']
 #html_file_suffix = None
 
 # Output file base name for HTML help builder.
-htmlhelp_basename = 'CASPERFITSIDIdoc'
+htmlhelp_basename = 'pyFITSIDIdoc'
 
 
 # -- Options for LaTeX output --------------------------------------------------
@@ -178,7 +178,7 @@ htmlhelp_basename = 'CASPERFITSIDIdoc'
 # Grouping the document tree into LaTeX files. List of tuples
 # (source start file, target name, title, author, documentclass [howto/manual]).
 latex_documents = [
-  ('index', 'CASPERFITSIDI.tex', u'CASPER FITS IDI Documentation',
+  ('index', 'pyFITSIDI.tex', u'py FITS IDI Documentation',
    u'Danny Price', 'manual'),
 ]
 
@@ -211,6 +211,6 @@ latex_documents = [
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
 man_pages = [
-    ('index', 'casperfitsidi', u'CASPER FITS IDI Documentation',
+    ('index', 'pyfitsidi', u'py FITS IDI Documentation',
      [u'Danny Price'], 1)
 ]

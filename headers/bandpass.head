@@ -1,8 +1,0 @@
-EXTNAME = 'BANDPASS'          /
-EXTVER  =                    1 /
-NO_ANT  =                    32 /
-NO_POL  =                    1 /
-NO_BACH =               1024 / Num bandpass channels
-NO_CHAN =               1024 /
-TABREV  =                    1 /
-END

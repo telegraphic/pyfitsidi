@@ -1,6 +1,20 @@
-casperfits v 0.0.1
+pyFitsidi v 0.1
 ----------------
+
+pyFitsidi is a python module that creates FITS IDI files. HTML documentation (generated with sphinx), can be found in docs/_build/html, or there is a PDF file equivalent in the base directory.
+
+pyFitsidi is a collection of functions that create headers and data units that conform to the FITS-IDI convention. It was written primarily to convert data from a CASPER correlator into a format that can be imported into data reduction packages such as AIPS++ and CASA. 
 
 The FITS Interferometry Data Interchange Convention (“FITS-IDI”) is a set of conventions layered upon the standard FITS format to assist in the interchange of data recorded by interferometric telescopes, particularly at radio frequencies and very long baselines.
 
-These scripts create FITS IDI files out of data. They are designed for CASPER instruments such as the ROACH correlator.
+HTML documentation (generated with sphinx), can be found in docs/_build/html, and there is also a PDF file.
+
+Much more info on the FITS IDI convention can be found on its official page
+<http://fits.gsfc.nasa.gov/registry/fitsidi.html>. 
+
+If you're not familiar with FITS files, you might also want to look at the actual FITS definition <http://www.aanda.org/index.php?option=com_article&access=doi&doi=10.1051/0004-6361/201015362&Itemid=129>
+
+pyFitsidi uses pyFITS for file I/O, so its worth getting familiar with pyfits
+<http://www.stsci.edu/resources/software_hardware/pyfits>
+
+Finally, there are useful FITS resources at the NASA FITS website <http://fits.gsfc.nasa.gov/fits_home.html>
