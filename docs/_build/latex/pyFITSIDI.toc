@@ -1,0 +1,24 @@
+\select@language {english}
+\contentsline {chapter}{\numberline {1}About pyFitsidi}{3}{chapter.1}
+\contentsline {chapter}{\numberline {2}The FITS IDI convention}{5}{chapter.2}
+\contentsline {chapter}{\numberline {3}Prerequisites}{7}{chapter.3}
+\contentsline {chapter}{\numberline {4}Example Usage}{9}{chapter.4}
+\contentsline {chapter}{\numberline {5}Module Documentation}{11}{chapter.5}
+\contentsline {section}{\numberline {5.1}pyFitsidi.py}{11}{section.5.1}
+\contentsline {subsection}{\numberline {5.1.1}FITS-IDI Table Overview}{11}{subsection.5.1.1}
+\contentsline {subsection}{\numberline {5.1.2}Module listing}{12}{subsection.5.1.2}
+\contentsline {paragraph}{Notes}{12}{paragraph*.4}
+\contentsline {paragraph}{Notes}{12}{paragraph*.6}
+\contentsline {paragraph}{Notes}{13}{paragraph*.8}
+\contentsline {paragraph}{Notes}{13}{paragraph*.10}
+\contentsline {paragraph}{Notes}{14}{paragraph*.12}
+\contentsline {paragraph}{Notes}{14}{paragraph*.14}
+\contentsline {paragraph}{Notes}{15}{paragraph*.16}
+\contentsline {paragraph}{Notes}{16}{paragraph*.18}
+\contentsline {paragraph}{Notes}{16}{paragraph*.21}
+\contentsline {paragraph}{Notes}{17}{paragraph*.23}
+\contentsline {paragraph}{Notes}{18}{paragraph*.25}
+\contentsline {section}{\numberline {5.2}astroCoords.py}{18}{section.5.2}
+\contentsline {subsection}{\numberline {5.2.1}Module listing}{19}{subsection.5.2.1}
+\contentsline {chapter}{Python Module Index}{21}{section*.38}
+\contentsline {chapter}{Index}{23}{section*.39}

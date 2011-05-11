@@ -1,0 +1,345 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+
+	config.xml
+	Configuration file for FITS IDI creation
+	========================================
+
+
+	Fill this in with information about your telescope, sources etc.
+	This will set up header values for your FITS file. This will NOT
+	set up the tables themselves: this is done inside pyFitsidi.py.
+	
+	IMPORTANT NOTES:
+	================
+  *All* text inside tags is run through python's eval() command.
+  This means you can do some neat stuff, like:
+    <EXAMPLE1> ephem.julian_date(datetime.datetime.now()) </EXAMPLE1>
+    <EXAMPLE2> numpy.rad2deg(numpy.pi/2) </EXAMPLE2>
+    <EXAMPLE3> [x for x in range(0,10)] </EXAMPLE3>
+    
+  But it also means you need to be careful, as this would be bad:
+    <BADNESS>os.system('rm -rf *')</BADNESS>
+  
+  As such, strings need to be enclosed in '':
+    <RIGHT>'MEDICINA'</RIGHT>     <- Parsed as a string with value 'MEDICINA'
+    <WRONG> MEDICINA </WRONG>     <- Parsed as variable with id MEDICINA
+    
+	A final note: comments shouldn't live inside the child elements. I could relax this, but
+	I would have to do more careful parsing (maybe one day).	
+	
+	MORE DOCUMENTATION
+	==================
+	For more info on the FITS IDI file format, refer to:
+	* AIPS Memo No. 102:  The FITS Interferometry Data Interchange Format;
+	* AIPS Memo 114r: The FITS Interferometry Data Interchange Convention — Revised; and,
+  * http://fits.gsfc.nasa.gov/registry/fitsidi.html
+  It will definitely help you fill this file out if you have a copy of the memo!
+	
+	
+	Created by Danny Price on 2011-05-06.
+	Copyright (c) 2011 The University of Oxford. All rights reserved.
+
+-->
+
+<config name="BEST-2">
+    
+  <notes> 'Example configuration file, for BEST-2 array in Medicina.' </notes>
+
+    <!--
+    
+    PRIMARY header
+    ==============
+    
+    The primary HDU serves three purposes:
+    1. It indicates that the file contains FITS-IDI data.
+    2. It carries general information that applies to all of the FITS-IDI data in the file.
+    3. It carries a record of the processing performed on the data up to the point that
+       the file was written.
+    
+    You need to have these keywords with these values in your header. No exceptions.
+    
+    BITPIX   8
+    NAXIS    0
+    EXTEND   T
+    GROUPS   T
+    GCOUNT   0
+    PCOUNT   0
+    
+    Information about the processing up to the point where the FITS file was created
+    should be recorded in HISTORY records in the primary header.
+    
+    We're also going to add in the CORRELAT keyword, just for the hell of it (it doesn't
+    really have a function at the moment)
+    
+    -->
+
+    <PRIMARY>
+      <BITPIX>8</BITPIX>
+      <NAXIS> 0</NAXIS>
+      <EXTEND>T</EXTEND>
+      <GROUPS>T</GROUPS>
+      <GCOUNT>0</GCOUNT>
+      <PCOUNT>0</PCOUNT>
+      <CORRELAT>'CASPER-FX'</CORRELAT>
+    </PRIMARY>
+    
+
+
+    <!-- 
+    
+    common header values
+    ====================
+    
+    These values are shared across all tables and are mandatory.
+    THESE SHOULD BE THE SAME FOR EACH TABLE AND SHOULD ONLY BE SET HERE!
+
+    TABREV      Revision number of the table definition (normally 1)
+    NO_STKD     The number of Stokes parameters
+    STK_1       The first Stokes parameter
+    NO_BAND     The number of bands
+    NO_CHAN     The number of spectral channels
+    REF_FREQ    The file reference frequency in Hz
+    CHAN_BW     Channel BW in Hz for the 1st band in freq. group with freq. ID 1
+    REF_PIXL    The reference pixel for the frequency axis
+    RDATE       Reference date: the date for which the time params in ARRAY_GEOMETRY apply
+
+    Each table also has a EXTNAME, but this is set up automatically so you don't
+    have to worry about it.
+    
+    Numeric Codes for Stokes Parameters:
+    1:I, 2:Q, 3:U, 4:V, -1:RR, -2:LL, -3:RL, -4:LR, -5:XX, -6:YY, -7:XY, -8:YX
+
+    -->
+    
+    <COMMON>
+       <OBSCODE>   'MEDI0001'      </OBSCODE>           
+       <RDATE>     '2011-04-25'    </RDATE>         
+       <NO_STKD>   1               </NO_STKD>
+       <STK_1>     -1              </STK_1>
+       <NO_BAND>   1               </NO_BAND>
+       <NO_CHAN>   1024            </NO_CHAN>
+       <REF_FREQ>  398.0E+06       </REF_FREQ>
+       <CHAN_BW>   0.01953125E+06  </CHAN_BW>
+       <REF_PIXL>  1.00E+00        </REF_PIXL>
+       <TABREV>    1               </TABREV>
+       <EXTVER>    1               </EXTVER>
+    </COMMON>
+
+
+    <!--
+ 
+    ANTENNA table header
+    ====================
+    
+    Not really that much to do here.
+    
+    The ANTENNA table contains information about the antennas used in a FITS-IDI
+    file that may change with time or with frequency setup. These characteristics
+    include the polarization properties of the feeds and the number of digitizer levels.
+
+    NOPCAL      The number of polarised calibration constants
+    POLTYPE     The feed polarisation parameterisation
+    
+    NOPCAL notes:
+    The ANTENNA table may carry information about the polarization characteristics of the 
+    feeds if this is known. If information about the polarization characteristics of the 
+    feeds is contained in the table then the NOPCAL keyword shall have the value 2. If no
+    information about the polarization characteristics is contained in the table then the
+    NOPCAL keyword shall have the value 0.
+    
+    POLTYPE notes:
+    If the table contains information about the polarization characteristics of the feeds 
+    then the feed parameterization that is used shallbe indicated by the value of the POLTYPE
+     keyword as given in Table 23. See “Feed Polarization” on page 17.
+    ‘APPROX’ Linear approximation for circular feeds
+    ‘X-Y LIN’ Linear approximation for linear feeds
+    ‘ORI-ELP’ Orientation and ellipticity
+
+    -->
+
+    <ANTENNA>
+        <EXTNAME> 'ANTENNA'   </EXTNAME>
+        <NOPCAL>  0         </NOPCAL>
+        <POLTYPE> 'X-Y LIN'  </POLTYPE>
+    </ANTENNA>
+
+    <!--
+    
+    ARRAY_GEOMETRY table header
+    ===========================
+    
+    The ARRAY_GEOMETRY tables define the arrays used in the file. Each ARRAY_GEOMETRY table 
+    lists the antennas that are part of that array together with their coordinates. It also
+    provides information about the time system used for that array.
+    
+    EXTVER  Array number
+    ARRNAM  Array name
+    FRAME   Coordinate frame
+    ARRAYX  x coordinate of array center in m (important, check the convention!!)
+    ARRAYY  y coordinate of array center in m
+    ARRAYZ  z coordinate of array center in m
+    NUMORB  Number of sattelites. Normally safe to assume this is zero.
+    FREQ    Reference frequency
+    TIMSYS  Time system
+    RDATE   Reference date
+    GSTIA0  Grenwich Sidereal time at 0 hrs
+    DEGPDY  The Earth’s rotation rate in deg per day
+    UT1UTC  UT1 - UTC
+    IATUTC  IAT - UTC
+    POLARX  x coordinate of north pole
+    POLARY  y coordinate of north pole
+    
+    GSTIA0, DEGPDY, UT1UTC notes: The default values for the time system 
+    are taken from http://fits.gsfc.nasa.gov/registry/fitsidi.html
+    I haven't checked these are actually correct (on my todo list)! 
+    
+    ARRAYX, ARRAYY, ARRAYZ notes: The values below are for Medicina.
+    These are VERY important and you'll have to change them. This might help:
+    http://www.oc.nps.edu/oc2902w/coord/llhxyz.htm   
+    
+    -->
+
+    <ARRAY_GEOMETRY>
+      <EXTNAME>  'ARRAY_GEOMETRY' </EXTNAME>
+      <ARRAYX>   4461.122E+03   </ARRAYX>
+      <ARRAYY>   919.46E+03     </ARRAYY>
+      <ARRAYZ>   4449.776E+03   </ARRAYZ>
+      <ARRNAM>   'MEDICINA'     </ARRNAM>
+      <NUMORB>   0              </NUMORB>
+      <FREQ>     408.0E+06      </FREQ> 
+      <FRAME>    'GEOCENTRIC'   </FRAME>
+      <TIMSYS>   'UTC'          </TIMSYS>
+      <TIMESYS>  'UTC'          </TIMESYS>
+      <GSTIA0>   3.30909596261338038E+02 </GSTIA0>
+      <DEGPDY>   3.60985644973299998E+02 </DEGPDY>
+      <POLARX>   2.08099999999999996E-01 </POLARX>
+      <POLARY>   2.80019999999999989E-01 </POLARY>
+      <UT1UTC>  -1.63126999999999995E-01 </UT1UTC>
+      <IATUTC>   3.30000000000000000E+01 </IATUTC>
+    </ARRAY_GEOMETRY>
+
+  <!--
+  
+  FREQUENCY table header
+  ======================
+  
+  The FREQUENCY table provides information about the frequency setups used in a 
+  FITS-IDI file. 
+  
+  An important table, but not that much to do in the way of headers.
+  
+  -->
+  
+  <FREQUENCY>
+    <EXTNAME>'FREQUENCY'</EXTNAME>
+  </FREQUENCY>
+    
+  <!-- 
+  
+  SOURCE table header
+  ===================
+  
+  The SOURCE table contains information about the sources for which data is available
+  in the FITS-IDI file.
+  
+  Again, an important table but not that much config required for headers.
+  
+  -->
+  
+  <SOURCE>
+    <EXTNAME>'SOURCE'</EXTNAME>
+  </SOURCE>
+
+  <!-- 
+  
+  UV_DATA table header
+  ===================
+
+  A UV_DATA table contains a set of visibility data matrices. If there is more than
+  one UV_DATA table in the file then no two tables shall contain data for overlapping
+  times and the tables shall appear in time order in the file1.
+  
+  This one is the biggest, most complicated and most important table. Spend a little time
+  making sure you've got this right.
+  
+  TABREV  2: This should OVERRIDE the common value that we set above as 1
+  NMATRIX 1: Don't think we've got a choice here
+  
+  The UV_DATA is a multidimensional array (6 levels in general)
+  MAXIS   M = number axes in regular matrix
+  MAXISm I Number pixels on axis m = 1 to M
+  CTYPEm A Name of regular axis m = 1 to M
+  CDELTm E Coordinate increment on axis m = 1 to M
+  CRPIXm E Reference pixel on axis m = 1 to M
+  CRVALm E Coordinate value at reference pixel on axis m = 1 to M
+  
+  Notes about the axes, with Medicina for an example:
+  * first axis is complex, real imag
+  * second axis is stokes, we only have 1
+  * third axis is number of frequency chans (1024 for us)
+  * this axis is the number of discrete bands (1 for medicina)
+  * RA  - not really sure why they decided to make this an axis
+  * DEC - this is part of the charm of FITS IDI
+
+  Which column is the visibility matrix in? I've hard coded this to 11
+  TMATXn L T — column n contains the visibility matrix
+
+  Finally, some values that you might to change: 
+  EQUINOX   Mean equinox (probably J2000)
+  WEIGHTYP  Type of data weights
+  DATE-OBS  Observing date
+  TELESCOP  Telescope name
+  OBSERVER  Observer’s name
+  VIS SCAL  Visibility scale factor
+  SORT      Sort order, * does no sorting (thus the quickest?)
+  
+  -->
+
+  <UV_DATA>
+    <EXTNAME>   'UV_DATA'   </EXTNAME>
+    <TABREV>    2           </TABREV>
+    <DATE-OBS>  '2011-04-25'</DATE-OBS>
+    <TELESCOP>  'BEST-2'    </TELESCOP>
+    <OBSERVER>  'DPRICE'    </OBSERVER>
+    <EQUINOX>   'J2000'     </EQUINOX>
+    <WEIGHTY>   'NORMAL'    </WEIGHTY>
+    <SORT>      '*'         </SORT>
+    <NMATRIX>   1           </NMATRIX>
+    <MAXIS>     6           </MAXIS>
+    <MAXIS1>    2           </MAXIS1>
+    <CTYPE1>    'COMPLEX'   </CTYPE1>
+    <CDELT1>    1.000E+00   </CDELT1>
+    <CRPIX1>    1.000E+00   </CRPIX1>
+    <CRVAL1>    1.000E+00   </CRVAL1>
+    <MAXIS2>    1           </MAXIS2>
+    <CTYPE2>    'STOKES'    </CTYPE2> 
+    <CDELT2>    -1.000E+00  </CDELT2>
+    <CRPIX2>    1.0000E+00  </CRPIX2>
+    <CRVAL2>    -1.000E+00  </CRVAL2>
+    <MAXIS3>    1024        </MAXIS3>
+    <CTYPE3>    'FREQ'      </CTYPE3>
+    <CDELT3>    0.01953125E+06</CDELT3>
+    <CRPIX3>    1.00000E+00 </CRPIX3>
+    <CRVAL3>    398.000E+06 </CRVAL3>
+    <MAXIS4>    1024        </MAXIS4>
+    <CTYPE4>    'BAND'      </CTYPE4>
+    <CDELT4>    1.000E+00   </CDELT4>
+    <CRPIX4>    1.000E+00   </CRPIX4>
+    <CRVAL4>    1.000E+00   </CRVAL4>
+    <MAXIS5>    1           </MAXIS5>
+    <CTYPE5>    'RA'        </CTYPE5>
+    <CDELT5>    0.000E+00   </CDELT5>
+    <CRPIX5>    1.000E+00   </CRPIX5>
+    <CRVAL5>    0.000E+00   </CRVAL5>
+    <MAXIS6>    1           </MAXIS6>
+    <CTYPE6>    'DEC'       </CTYPE6>
+    <CDELT6>    0.000E+00   </CDELT6>
+    <CRPIX6>    1.000E+00   </CRPIX6>
+    <CRVAL6>    0.000E+00   </CRVAL6>
+    <TMATX11>   T           </TMATX11>
+  </UV_DATA>
+
+
+</config>
+
