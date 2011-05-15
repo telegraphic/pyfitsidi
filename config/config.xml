@@ -5,28 +5,40 @@
 	Configuration file for FITS IDI creation
 	========================================
 
-
 	Fill this in with information about your telescope, sources etc.
-	This will set up header values for your FITS file. This will NOT
-	set up the tables themselves: this is done inside pyFitsidi.py.
+	This will set up header values for your FITS file, and will set up
+	the column data array sizes.
+	
+	It does NOT assign any values to the rows and columns of the
+  binary data tables themselves. This should be done in a second step.
 	
 	IMPORTANT NOTES:
 	================
   *All* text inside tags is run through python's eval() command.
-  This means you can do some neat stuff, like:
-    <EXAMPLE1> ephem.julian_date(datetime.datetime.now()) </EXAMPLE1>
+  This means you can do some neat (i.e. super dodgy but pretty powerful) stuff, like:
+    <EXAMPLE1> import ephem, datetime; ephem.julian_date(datetime.datetime.now()) </EXAMPLE1>
     <EXAMPLE2> numpy.rad2deg(numpy.pi/2) </EXAMPLE2>
     <EXAMPLE3> [x for x in range(0,10)] </EXAMPLE3>
-    
-  But it also means you need to be careful, as this would be bad:
-    <BADNESS>os.system('rm -rf *')</BADNESS>
   
-  As such, strings need to be enclosed in '':
+  
+  In fact, this file uses this to reference itself. In the pyFitsidi.py code, we have
+  the following line, which makes a dictionary called 'params' by parsing this file:
+    params = parseConfig('PARAMETERS', config)
+  Later on in this XML file we reference this python dictionary:  
+    <EXAMPLE4> params['NCHAN'] </EXAMPLE4>
+  Of course, this means that we're parsing this file multiple times, and things could
+  fail spectacularly if they're evaluated before other parts are parsed. So, be careful
+  not to set yourself up the bomb.
+
+  You also need to be careful, as doing something like this would be SUPER bad:
+    <BADNESS>os.system('rm -rf *')</BADNESS>  
+  
+  Finally, note that strings need to be enclosed in '' so they pass through eval():
     <RIGHT>'MEDICINA'</RIGHT>     <- Parsed as a string with value 'MEDICINA'
     <WRONG> MEDICINA </WRONG>     <- Parsed as variable with id MEDICINA
     
 	A final note: comments shouldn't live inside the child elements. I could relax this, but
-	I would have to do more careful parsing (maybe one day).	
+	I would have to do more careful parsing (maybe one day).
 	
 	MORE DOCUMENTATION
 	==================
@@ -45,6 +57,42 @@
 <config name="BEST-2">
     
   <notes> 'Example configuration file, for BEST-2 array in Medicina.' </notes>
+  
+    <!--
+    
+    PARAMETERS
+    ==========
+    
+    A number of arrays have dimensions that depend on the parameters of the data set
+    or of the table to which they belong. The notations used for these parameters are
+    listed below (and in the FITS=IDI documentation)
+
+    The values here are mainly used to help set up the table columns in the HDU.
+    For example, if you had 8 bands, with 32 channels, then the UV_DATA table needs
+    to know about this, and it should assign an array of size 8*32*2(real & imag)*32bits.
+
+    Data Set Parameters
+    nstokes The number of Stokes parameters in the data set
+    nband   The number of bands in the data set
+    nchan   The number of channels in the data set
+    ntone   The maximum number of pulse-cal tones in a PHASE-CAL table
+    norb    The number of orbital parameters in an ANTENNA_GEOMETRY table
+    npoly   The number of terms in a delay polynomial in an INTERFEROMETER_MODEL table
+    ntab    The maximum number of tabulated vals/terms for in a GAIN_CURVE table
+    
+    -->
+    
+    <PARAMETERS>
+      <NSTOKES>2     </NSTOKES>
+      <NBAND>  4     </NBAND>  
+      <NCHAN>  32  </NCHAN> 
+      <NTONE>  1     </NTONE>
+      <NORB>   1     </NORB>
+      <NPOLY>  1     </NPOLY>
+      <NTAB>   1     </NTAB>
+      <NPCAL>  1     </NPCAL>
+      <date>datetime.datetime.now()</date>
+    </PARAMETERS>
 
     <!--
     
@@ -115,10 +163,10 @@
     <COMMON>
        <OBSCODE>   'MEDI0001'      </OBSCODE>           
        <RDATE>     '2011-04-25'    </RDATE>         
-       <NO_STKD>   1               </NO_STKD>
+       <NO_STKD>   params['NSTOKES']</NO_STKD>
        <STK_1>     -1              </STK_1>
-       <NO_BAND>   1               </NO_BAND>
-       <NO_CHAN>   1024            </NO_CHAN>
+       <NO_BAND>   params['NBAND'] </NO_BAND>
+       <NO_CHAN>   params['NCHAN'] </NO_CHAN>
        <REF_FREQ>  398.0E+06       </REF_FREQ>
        <CHAN_BW>   0.01953125E+06  </CHAN_BW>
        <REF_PIXL>  1.00E+00        </REF_PIXL>
@@ -312,17 +360,17 @@
     <CDELT1>    1.000E+00   </CDELT1>
     <CRPIX1>    1.000E+00   </CRPIX1>
     <CRVAL1>    1.000E+00   </CRVAL1>
-    <MAXIS2>    1           </MAXIS2>
+    <MAXIS2>    params['NSTOKES'] </MAXIS2>
     <CTYPE2>    'STOKES'    </CTYPE2> 
     <CDELT2>    -1.000E+00  </CDELT2>
     <CRPIX2>    1.0000E+00  </CRPIX2>
     <CRVAL2>    -1.000E+00  </CRVAL2>
-    <MAXIS3>    1024        </MAXIS3>
+    <MAXIS3>    params['NCHAN'] </MAXIS3>
     <CTYPE3>    'FREQ'      </CTYPE3>
     <CDELT3>    0.01953125E+06</CDELT3>
     <CRPIX3>    1.00000E+00 </CRPIX3>
     <CRVAL3>    398.000E+06 </CRVAL3>
-    <MAXIS4>    1024        </MAXIS4>
+    <MAXIS4>    params['NBAND'] </MAXIS4>
     <CTYPE4>    'BAND'      </CTYPE4>
     <CDELT4>    1.000E+00   </CDELT4>
     <CRPIX4>    1.000E+00   </CRPIX4>
