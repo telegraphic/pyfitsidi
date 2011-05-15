@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-1.40.10 (TeX Live 2009) (format=pdflatex 2010.7.7)  11 MAY 2011 16:14
+This is pdfTeX, Version 3.1415926-1.40.10 (TeX Live 2009) (format=pdflatex 2010.7.7)  15 MAY 2011 22:16
 entering extended mode
  %&-line parsing enabled.
 **pyFITSIDI.tex
@@ -921,23 +921,24 @@ LaTeX Font Info:    Font shape `T1/pcr/bx/n' in size <10> not available
 ]
 LaTeX Font Info:    Font shape `T1/phv/bx/n' in size <9> not available
 (Font)              Font shape `T1/phv/b/n' tried instead on input line 353.
- [12] [13] [14] [15] [16] [17] [18] [19] [20] [21
-
-
-
-] (./pyFITSIDI.ind
-[22
-
+ [12] [13] [14] [15] [16] [17] [18] [19] [20] [21] [22
 
 ] [23
 
 
+]
+(./pyFITSIDI.ind [24
+
+
+] [25
+
+
 ]) (./pyFITSIDI.aux) ) 
 Here is how much of TeX's memory you used:
- 8018 strings out of 493848
- 109950 string characters out of 3149208
- 196858 words of memory out of 3000000
- 11022 multiletter control sequences out of 15000+200000
+ 8029 strings out of 493848
+ 110150 string characters out of 3149208
+ 197038 words of memory out of 3000000
+ 11026 multiletter control sequences out of 15000+200000
  62655 words of font info for 71 fonts, out of 3000000 for 9000
  715 hyphenation exceptions out of 8191
  45i,11n,45p,502b,540s stack positions out of 5000i,500n,10000p,200000b,50000s
@@ -951,9 +952,9 @@ f-dist/fonts/type1/urw/helvetic/uhvr8a.pfb></usr/local/texlive/2009/texmf-dist/
 fonts/type1/urw/times/utmb8a.pfb></usr/local/texlive/2009/texmf-dist/fonts/type
 1/urw/times/utmr8a.pfb></usr/local/texlive/2009/texmf-dist/fonts/type1/urw/time
 s/utmri8a.pfb>
-Output written on pyFITSIDI.pdf (27 pages, 204003 bytes).
+Output written on pyFITSIDI.pdf (29 pages, 208677 bytes).
 PDF statistics:
- 297 PDF objects out of 1000 (max. 8388607)
- 76 named destinations out of 1000 (max. 500000)
+ 315 PDF objects out of 1000 (max. 8388607)
+ 83 named destinations out of 1000 (max. 500000)
  78 words of extra memory for PDF output out of 10000 (max. 10000000)
 

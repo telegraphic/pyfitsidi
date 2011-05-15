@@ -12,7 +12,7 @@
 
 
 \title{py FITS IDI Documentation}
-\date{May 11, 2011}
+\date{May 15, 2011}
 \release{0.1}
 \author{Danny Price}
 \newcommand{\sphinxlogo}{}
@@ -517,6 +517,38 @@ BIMAG\_1:    Bandpass response imaginary component
 \end{fulllineitems}
 
 
+\index{make\_baseline() (in module pyFitsidi)}
+
+\begin{fulllineitems}
+\phantomsection\label{index:pyFitsidi.make_baseline}\pysiglinewithargsret{\code{pyFitsidi.}\bfcode{make\_baseline}}{}{}
+Makes baseline table
+The BASELINE table contains baseline-dependent multiplicative and additive corrections.
+
+This table is currently not supported (on the todo list)
+
+\end{fulllineitems}
+
+
+\index{make\_calibration() (in module pyFitsidi)}
+
+\begin{fulllineitems}
+\phantomsection\label{index:pyFitsidi.make_calibration}\pysiglinewithargsret{\code{pyFitsidi.}\bfcode{make\_calibration}}{}{}
+Make calibration table
+
+From the FITS IDI documentation:
+This chapter is included for documentation and discussion purposes only. So far as this 
+author is aware, no software has been implemented to either write or read the CALIBRATION table.
+Therefore, the description provided in this section should be regarded as tentative. 
+In fact, it is not at all clear what the intentions were in the case of some of the 
+columns specified for this table.
+\begin{quote}
+
+This table is currently not supported (on the very bottom of the todo list)
+\end{quote}
+
+\end{fulllineitems}
+
+
 \index{make\_flag() (in module pyFitsidi)}
 
 \begin{fulllineitems}
@@ -759,6 +791,20 @@ DISP\_1        Dispersive delay for polarization 1 at 1m wavelength
 DDISP\_1       Rate of change of dispersive del for pol 1 at 1m
 
 \end{itemize}
+
+\end{fulllineitems}
+
+
+\index{make\_model\_comps() (in module pyFitsidi)}
+
+\begin{fulllineitems}
+\phantomsection\label{index:pyFitsidi.make_model_comps}\pysiglinewithargsret{\code{pyFitsidi.}\bfcode{make\_model\_comps}}{}{}
+Make model comps table
+
+The MODEL COMPS table is one of those reserved for use by the VLBA.
+As such, I can't see anyone in CASPER needing it any time soon.
+
+Again, this table is currently not supported (on the todo list)
 
 \end{fulllineitems}
 
@@ -1072,12 +1118,29 @@ FLUX         UV visibility data matrix
 \end{fulllineitems}
 
 
+\index{make\_weather() (in module pyFitsidi)}
+
+\begin{fulllineitems}
+\phantomsection\label{index:pyFitsidi.make_weather}\pysiglinewithargsret{\code{pyFitsidi.}\bfcode{make\_weather}}{}{}
+Makes weather table
+The WEATHER table contains meteorological data for the antennæ and times 
+used in the FITS-IDI file.
+
+This table is currently not supported (on the todo list)
+
+\end{fulllineitems}
+
+
 \index{parseConfig() (in module pyFitsidi)}
 
 \begin{fulllineitems}
 \phantomsection\label{index:pyFitsidi.parseConfig}\pysiglinewithargsret{\code{pyFitsidi.}\bfcode{parseConfig}}{\emph{tagname}, \emph{config='config.xml'}}{}
 Finds tagname, in elementTree x, parses and returns dictionary of values
-This is a helper function, and is not usually called directly
+This is a helper function, and is not usually called directly.
+\paragraph{Notes}
+
+This function uses eval() to evaluate the text string inside a child tag. As such,
+exercise caution! todo: block off certain modules to eval()
 
 \end{fulllineitems}
 

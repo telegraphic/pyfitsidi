@@ -2,41 +2,45 @@
 \def\bigletter#1{{\Large\sffamily#1}\nopagebreak\vspace{1mm}}
 
   \bigletter A
-  \item astroCoords (module), \hyperpage{18}
+  \item astroCoords (module), \hyperpage{19}
 
   \indexspace
   \bigletter D
   \item decdms2deg() (in module astroCoords), \hyperpage{19}
   \item decdms2rad() (in module astroCoords), \hyperpage{19}
   \item deg2decdms() (in module astroCoords), \hyperpage{19}
-  \item deg2rad() (in module astroCoords), \hyperpage{19}
-  \item deg2rahms() (in module astroCoords), \hyperpage{19}
+  \item deg2rad() (in module astroCoords), \hyperpage{20}
+  \item deg2rahms() (in module astroCoords), \hyperpage{20}
 
   \indexspace
   \bigletter M
   \item make\_antenna() (in module pyFitsidi), \hyperpage{12}
   \item make\_array\_geometry() (in module pyFitsidi), \hyperpage{12}
   \item make\_bandpass() (in module pyFitsidi), \hyperpage{13}
+  \item make\_baseline() (in module pyFitsidi), \hyperpage{13}
+  \item make\_calibration() (in module pyFitsidi), \hyperpage{13}
   \item make\_flag() (in module pyFitsidi), \hyperpage{13}
   \item make\_frequency() (in module pyFitsidi), \hyperpage{14}
   \item make\_gain\_curve() (in module pyFitsidi), \hyperpage{14}
   \item make\_interferometer\_model() (in module pyFitsidi), \hyperpage{15}
-  \item make\_phase\_cal() (in module pyFitsidi), \hyperpage{15}
+  \item make\_model\_comps() (in module pyFitsidi), \hyperpage{16}
+  \item make\_phase\_cal() (in module pyFitsidi), \hyperpage{16}
   \item make\_primary() (in module pyFitsidi), \hyperpage{16}
-  \item make\_source() (in module pyFitsidi), \hyperpage{16}
+  \item make\_source() (in module pyFitsidi), \hyperpage{17}
   \item make\_system\_temperature() (in module pyFitsidi), \hyperpage{17}
   \item make\_uv\_data() (in module pyFitsidi), \hyperpage{18}
+  \item make\_weather() (in module pyFitsidi), \hyperpage{19}
 
   \indexspace
   \bigletter P
-  \item parseConfig() (in module pyFitsidi), \hyperpage{18}
+  \item parseConfig() (in module pyFitsidi), \hyperpage{19}
   \item pyFitsidi (module), \hyperpage{11}
 
   \indexspace
   \bigletter R
-  \item rad2decdms() (in module astroCoords), \hyperpage{19}
-  \item rad2deg() (in module astroCoords), \hyperpage{19}
-  \item rad2rahms() (in module astroCoords), \hyperpage{19}
+  \item rad2decdms() (in module astroCoords), \hyperpage{20}
+  \item rad2deg() (in module astroCoords), \hyperpage{20}
+  \item rad2rahms() (in module astroCoords), \hyperpage{20}
   \item rahms2deg() (in module astroCoords), \hyperpage{20}
   \item rahms2rad() (in module astroCoords), \hyperpage{20}
 

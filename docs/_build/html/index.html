@@ -322,6 +322,28 @@ important to understand and to get into your dataset.</p>
 </dd></dl>
 
 <dl class="function">
+<dt id="pyFitsidi.make_baseline">
+<tt class="descclassname">pyFitsidi.</tt><tt class="descname">make_baseline</tt><big>(</big><big>)</big><a class="headerlink" href="#pyFitsidi.make_baseline" title="Permalink to this definition">¶</a></dt>
+<dd><p>Makes baseline table
+The BASELINE table contains baseline-dependent multiplicative and additive corrections.</p>
+<p>This table is currently not supported (on the todo list)</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="pyFitsidi.make_calibration">
+<tt class="descclassname">pyFitsidi.</tt><tt class="descname">make_calibration</tt><big>(</big><big>)</big><a class="headerlink" href="#pyFitsidi.make_calibration" title="Permalink to this definition">¶</a></dt>
+<dd><p>Make calibration table</p>
+<p>From the FITS IDI documentation:
+This chapter is included for documentation and discussion purposes only. So far as this 
+author is aware, no software has been implemented to either write or read the CALIBRATION table.
+Therefore, the description provided in this section should be regarded as tentative. 
+In fact, it is not at all clear what the intentions were in the case of some of the 
+columns specified for this table.</p>
+<blockquote>
+<div>This table is currently not supported (on the very bottom of the todo list)</div></blockquote>
+</dd></dl>
+
+<dl class="function">
 <dt id="pyFitsidi.make_flag">
 <tt class="descclassname">pyFitsidi.</tt><tt class="descname">make_flag</tt><big>(</big><em>config='config.xml'</em>, <em>num_rows=1</em><big>)</big><a class="headerlink" href="#pyFitsidi.make_flag" title="Permalink to this definition">¶</a></dt>
 <dd><p>Creates a vanilla FLAG table HDU</p>
@@ -468,6 +490,15 @@ Todo: Add switch to allow dual polarisation.</p>
 <li>DISP_1        Dispersive delay for polarization 1 at 1m wavelength</li>
 <li>DDISP_1       Rate of change of dispersive del for pol 1 at 1m</li>
 </ul>
+</dd></dl>
+
+<dl class="function">
+<dt id="pyFitsidi.make_model_comps">
+<tt class="descclassname">pyFitsidi.</tt><tt class="descname">make_model_comps</tt><big>(</big><big>)</big><a class="headerlink" href="#pyFitsidi.make_model_comps" title="Permalink to this definition">¶</a></dt>
+<dd><p>Make model comps table</p>
+<p>The MODEL COMPS table is one of those reserved for use by the VLBA.
+As such, I can&#8217;t see anyone in CASPER needing it any time soon.</p>
+<p>Again, this table is currently not supported (on the todo list)</p>
 </dd></dl>
 
 <dl class="function">
@@ -653,10 +684,22 @@ Todo: add dual pol support.</p>
 </dd></dl>
 
 <dl class="function">
+<dt id="pyFitsidi.make_weather">
+<tt class="descclassname">pyFitsidi.</tt><tt class="descname">make_weather</tt><big>(</big><big>)</big><a class="headerlink" href="#pyFitsidi.make_weather" title="Permalink to this definition">¶</a></dt>
+<dd><p>Makes weather table
+The WEATHER table contains meteorological data for the antennæ and times 
+used in the FITS-IDI file.</p>
+<p>This table is currently not supported (on the todo list)</p>
+</dd></dl>
+
+<dl class="function">
 <dt id="pyFitsidi.parseConfig">
 <tt class="descclassname">pyFitsidi.</tt><tt class="descname">parseConfig</tt><big>(</big><em>tagname</em>, <em>config='config.xml'</em><big>)</big><a class="headerlink" href="#pyFitsidi.parseConfig" title="Permalink to this definition">¶</a></dt>
 <dd><p>Finds tagname, in elementTree x, parses and returns dictionary of values
-This is a helper function, and is not usually called directly</p>
+This is a helper function, and is not usually called directly.</p>
+<p class="rubric">Notes</p>
+<p>This function uses eval() to evaluate the text string inside a child tag. As such,
+exercise caution! todo: block off certain modules to eval()</p>
 </dd></dl>
 
 </div>
