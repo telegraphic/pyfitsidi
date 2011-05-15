@@ -91,7 +91,6 @@
       <NPOLY>  1     </NPOLY>
       <NTAB>   1     </NTAB>
       <NPCAL>  1     </NPCAL>
-      <date>datetime.datetime.now()</date>
     </PARAMETERS>
 
     <!--
@@ -390,4 +389,3 @@
 
 
 </config>
-
