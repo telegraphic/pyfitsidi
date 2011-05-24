@@ -83,7 +83,7 @@
     -->
     
     <PARAMETERS>
-      <NSTOKES>1     </NSTOKES>
+      <NSTOKES>2     </NSTOKES>
       <NBAND>  1     </NBAND>  
       <NCHAN>  1024  </NCHAN> 
       <NTONE>  1     </NTONE>
