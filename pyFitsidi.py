@@ -497,6 +497,8 @@ def make_uv_data(config='config.xml', num_rows=1):
   params = parseConfig('PARAMETERS', config)
   cards  = parseConfig('UV_DATA', config)
   common = parseConfig('COMMON', config)
+
+
                                           
   c.append(pf.Column(name='UU', format='1E',\
     unit='SECONDS', array=np.zeros(num_rows,dtype='float32')))
@@ -530,7 +532,7 @@ def make_uv_data(config='config.xml', num_rows=1):
   nstokes = params['NSTOKES']
   nband   = params['NBAND']
   
-  nbits = nchan * nstokes * nband
+  nbits = nchan * nstokes * nband * 2 # 2= Real & Im
   format = '%iE'%nbits
   dtype  = '%ifloat32'%nbits
   
@@ -538,14 +540,14 @@ def make_uv_data(config='config.xml', num_rows=1):
     array=np.zeros(num_rows,dtype=dtype)))
     
   c.append(pf.Column(name='FLUX', format=format,\
-    unit='UNCALIB', array=np.zeros(num_rows,dtype=dtype)))
-  
+    unit='UNCALIB', array=np.zeros(num_rows,dtype=dtype)))  
   
   coldefs = pf.ColDefs(c)
   tblhdu = pf.new_table(coldefs)
 
-  for key in cards: tblhdu.header.update(key, cards[key])
-  for key in common: tblhdu.header.update(key, common[key]) 
+  for key in sorted(common): tblhdu.header.update(key, common[key])
+  for key in sorted(cards): tblhdu.header.update(key, cards[key])
+
         
   return tblhdu
 

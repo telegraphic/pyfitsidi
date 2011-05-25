@@ -462,8 +462,8 @@ def main():
   print('\nInput and output filenames')
   print('--------------------------------')
   # What are the filenames for our datasets?
-  hdffile  = '../hdf5/3C251/corr.2455676.34225.h5c.3c251'
-  fitsfile = '../fits/3C251/corr.2455676.34225.h5c.3c251.fits'
+  hdffile  = '../for_danny.h5'
+  fitsfile = '../for_danny.fits'
   configxml = 'config/medicina.xml'
   print "In: %s \nOut: %s\nConfig: %s"%(hdffile, fitsfile, configxml)
   

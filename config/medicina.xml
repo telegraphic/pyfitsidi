@@ -83,7 +83,7 @@
     -->
     
     <PARAMETERS>
-      <NSTOKES>2     </NSTOKES>
+      <NSTOKES>1     </NSTOKES>
       <NBAND>  1     </NBAND>  
       <NCHAN>  1024  </NCHAN> 
       <NTONE>  1     </NTONE>
@@ -163,7 +163,7 @@
        <OBSCODE>   'MEDI0001'      </OBSCODE>           
        <RDATE>     '2011-04-25'    </RDATE>         
        <NO_STKD>   params['NSTOKES']</NO_STKD>
-       <STK_1>     -1              </STK_1>
+       <STK_1>     1               </STK_1>
        <NO_BAND>   params['NBAND'] </NO_BAND>
        <NO_CHAN>   params['NCHAN'] </NO_CHAN>
        <REF_FREQ>  398.0E+06       </REF_FREQ>
@@ -349,21 +349,20 @@
     <DATE-OBS>  '2011-04-25'</DATE-OBS>
     <TELESCOP>  'BEST-2'    </TELESCOP>
     <OBSERVER>  'DPRICE'    </OBSERVER>
-    <EQUINOX>   'J2000'     </EQUINOX>
     <WEIGHTY>   'NORMAL'    </WEIGHTY>
     <SORT>      '*'         </SORT>
     <NMATRIX>   1           </NMATRIX>
     <MAXIS>     6           </MAXIS>
     <MAXIS1>    2           </MAXIS1>
     <CTYPE1>    'COMPLEX'   </CTYPE1>
-    <CDELT1>    1.000E+00   </CDELT1>
+    <CDELT1>    0           </CDELT1>
     <CRPIX1>    1.000E+00   </CRPIX1>
-    <CRVAL1>    1.000E+00   </CRVAL1>
+    <CRVAL1>    0.000E+00   </CRVAL1>
     <MAXIS2>    params['NSTOKES'] </MAXIS2>
     <CTYPE2>    'STOKES'    </CTYPE2> 
-    <CDELT2>    -1.000E+00  </CDELT2>
+    <CDELT2>    -1          </CDELT2>
     <CRPIX2>    1.0000E+00  </CRPIX2>
-    <CRVAL2>    -1.000E+00  </CRVAL2>
+    <CRVAL2>   -1           </CRVAL2>
     <MAXIS3>    params['NCHAN'] </MAXIS3>
     <CTYPE3>    'FREQ'      </CTYPE3>
     <CDELT3>    0.01953125E+06</CDELT3>
