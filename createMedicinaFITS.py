@@ -379,7 +379,7 @@ def config_uv_data(h5, tbl_uv_data, antenna_array, source):
   # Extract the timestamps and use these to make source our phase centre
   uvws = []
   for timestamp in timestamps:
-    t = datetime.datetime.fromtimestamp(timestamp)
+    t = datetime.datetime.utcfromtimestamp(timestamp)
     print t
     antenna_array.update(t)
     source.compute(antenna_array)
