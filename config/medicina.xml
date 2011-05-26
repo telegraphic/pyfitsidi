@@ -163,7 +163,7 @@
        <OBSCODE>   'MEDI0001'      </OBSCODE>           
        <RDATE>     '2011-04-25'    </RDATE>         
        <NO_STKD>   params['NSTOKES']</NO_STKD>
-       <STK_1>     1               </STK_1>
+       <STK_1>     -1              </STK_1>
        <NO_BAND>   params['NBAND'] </NO_BAND>
        <NO_CHAN>   params['NCHAN'] </NO_CHAN>
        <REF_FREQ>  398.0E+06       </REF_FREQ>
@@ -321,9 +321,12 @@
   CRPIXm E Reference pixel on axis m = 1 to M
   CRVALm E Coordinate value at reference pixel on axis m = 1 to M
   
+  
   Notes about the axes, with Medicina for an example:
   * first axis is complex, real imag
   * second axis is stokes, we only have 1
+    NEED TO MAKE SURE THE CRVAL2 HERE MATCHES YOUR STOKES PARAMETER
+    (SEE COMMON HEADER FOR MORE, -1 is RR, 1 is I, etc.)
   * third axis is number of frequency chans (1024 for us)
   * this axis is the number of discrete bands (1 for medicina)
   * RA  - not really sure why they decided to make this an axis
@@ -362,7 +365,7 @@
     <CTYPE2>    'STOKES'    </CTYPE2> 
     <CDELT2>    -1          </CDELT2>
     <CRPIX2>    1.0000E+00  </CRPIX2>
-    <CRVAL2>   -1           </CRVAL2>
+    <CRVAL2>    -1           </CRVAL2>
     <MAXIS3>    params['NCHAN'] </MAXIS3>
     <CTYPE3>    'FREQ'      </CTYPE3>
     <CDELT3>    0.01953125E+06</CDELT3>
