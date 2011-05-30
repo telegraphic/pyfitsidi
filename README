@@ -7,7 +7,9 @@ pyFitsidi is a collection of functions that create headers and data units that c
 
 The FITS Interferometry Data Interchange Convention (“FITS-IDI”) is a set of conventions layered upon the standard FITS format to assist in the interchange of data recorded by interferometric telescopes, particularly at radio frequencies and very long baselines.
 
-HTML documentation (generated with sphinx), can be found in docs/_build/html, and there is also a PDF file.
+HTML documentation (generated with sphinx), can be found at
+<http://telegraphic.github.com/pyfitsidi/index.html>
+or in docs/_build/html. There is also PDF documentation in the package.
 
 Much more info on the FITS IDI convention can be found on its official page
 <http://fits.gsfc.nasa.gov/registry/fitsidi.html>. 
