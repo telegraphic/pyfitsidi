@@ -1,3 +1,7 @@
+NOTE: July 1, 2016: This repository is no longer maintained. 
+NOTE: Certain aspects have been ported to `fits2hdf` 
+NOTE: https://github.com/telegraphic/fits2hdf
+
 pyFitsidi v 0.1
 ----------------
 
